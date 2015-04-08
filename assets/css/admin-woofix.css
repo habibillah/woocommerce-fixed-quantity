@@ -1,0 +1,33 @@
+#woofix_product_data .options_group {
+    padding: 10px 20px;
+}
+
+#woofix_product_data table {
+    width: 100%;
+    text-align: left;
+}
+
+#woofix_product_data table th {
+    white-space: nowrap;
+}
+
+#woofix_product_data table input {
+    width: 100%;
+}
+
+#woofix_product_data table th.woofix_desc {
+    width: 40%;
+}
+
+#woofix_product_data table th.woofix_disc {
+    width: 10%;
+}
+#woofix_product_data table th.woofix_price {
+    width: 20%;
+}
+
+#woofix_product_data input.woofix_input_disc,
+#woofix_product_data input.woofix_input_qty,
+#woofix_product_data input.woofix_input_price {
+    text-align: right;
+}
