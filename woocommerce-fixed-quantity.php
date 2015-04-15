@@ -6,7 +6,7 @@
  * Version: 1.0.1
  * Author: Habibillah
  * Author URI: http://habibillah.wordpress.com/
- * Requires at least: 3.8.1
+ * Requires at least: 3.0.1
  * Tested up to: 4.1.0
  *
  * Text Domain: woofix
