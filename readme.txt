@@ -54,7 +54,7 @@ allowed back orders, the defined quantity list will shown, whatever quantity in 
 == Changelog ==
 
 = 1.0 =
-* Initail public release.
+* Initial public release.
 * Add fixed quantity to product
 
 == Upgrade Notice ==
