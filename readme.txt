@@ -56,3 +56,8 @@ allowed back orders, the defined quantity list will shown, whatever quantity in 
 = 1.0 =
 * Initail public release.
 * Add fixed quantity to product
+
+== Upgrade Notice ==
+
+= 1.0 =
+This is the initial public release. Fill free to ask, report bugs, etc.
