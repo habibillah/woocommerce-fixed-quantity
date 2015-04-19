@@ -24,6 +24,7 @@ if (!class_exists('WooClientFixedQuantity')) {
             add_filter('woocommerce_order_formatted_line_subtotal', array(&$this, 'order_formatted_line_subtotal'), 10, 2);
             add_filter('woocommerce_add_to_cart_validation', array(&$this, 'validate_quantity'), 10, 3);
             add_filter('woocommerce_update_cart_validation', array(&$this, 'validate_quantity_update'), 10, 4);
+            add_filter('woocommerce_cart_item_quantity', array(&$this, 'filter_woocommerce_cart_item_quantity'), 10, 2);
 
             add_action('woocommerce_before_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
             add_action('woocommerce_calculate_totals', array(&$this, 'action_after_calculate_totals'), 10, 1);
@@ -33,6 +34,35 @@ if (!class_exists('WooClientFixedQuantity')) {
             } else {
                 add_filter('woocommerce_cart_item_price_html', array(&$this, 'filter_item_price'), 20, 2);
             }
+        }
+
+        public function filter_woocommerce_cart_item_quantity($input_html, $cart_item_key)
+        {
+            $cart = WC()->cart->get_cart();
+            if (!empty($cart[$cart_item_key])) {
+                $cart_item = $cart[$cart_item_key];
+                $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
+                $productId = WoofixUtility::getActualId($_product);
+                $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
+                if ($fixedPriceData !== false) {
+
+                    $input_html = '<select name="cart[' . $cart_item_key . '][qty]" class="input-text qty text">';
+                    foreach ($fixedPriceData['woofix'] as $item) {
+
+                        $selected = ($item['woofix_qty'] == $cart_item['quantity']);
+                        $price = wc_price($item['woofix_price']);
+                        $total = wc_price($item['woofix_price'] * $item['woofix_qty']);
+
+                        $input_html .= '<option value="' . $item['woofix_qty'] . '" ' . (($selected)? 'selected' : '') . '>';
+                        $input_html .= "{$item['woofix_qty']} {$item['woofix_desc']} (@{$price})&nbsp;&nbsp;&nbsp;{$total}&nbsp;";
+                        $input_html .= '</option>';
+                    }
+                    $input_html .= '</select>';
+                }
+
+            }
+
+            return $input_html;
         }
 
         /**
