@@ -17,7 +17,7 @@ $data = WoofixUtility::isFixedQtyPrice($product->id);
             title="<?php _ex( 'Qty', 'Product quantity input tooltip', 'woocommerce' ); ?>"
             class="qty">
         <?php foreach ($data['woofix'] as $item): ?>
-            <option value="<?php echo $item['woofix_qty'] ?>">
+            <option value="<?php echo $item['woofix_qty'] ?>" data-qty="<?php echo $item['woofix_qty'] ?>" data-price="<?php echo $item['woofix_price']; ?>">
                 <?php
                 $price = wc_price($item['woofix_price']);
                 $total = wc_price($item['woofix_price'] * $item['woofix_qty']);
