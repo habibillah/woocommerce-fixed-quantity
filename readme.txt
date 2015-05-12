@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
 Tested up to: 4.1.0
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,18 +46,18 @@ allowed back orders, the defined quantity list will shown, whatever quantity in 
 
 == Screenshots ==
 
-1. /assets/screenshot_admin.png
-1. /assets/screenshot_product.png
-2. /assets/screenshot_cart.png
-3. /assets/screenshot_checkout.png
+1. screenshot_admin.png
+1. screenshot_product.png
+2. screenshot_cart.png
+3. screenshot_checkout.png
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.1 =
 * Initial public release.
 * Add fixed quantity to product
 
 == Upgrade Notice ==
 
-= 1.0 =
+= 1.0.1 =
 This is the initial public release. Fill free to ask, report bugs, etc.
