@@ -1,1 +1,4 @@
 * text=auto !eol
+/LICENSE -text
+/readme.txt -text
+/woocommerce-fixed-quantity.php -text
