@@ -46,10 +46,10 @@ allowed back orders, the defined quantity list will shown, whatever quantity in 
 
 == Screenshots ==
 
-1. screenshot_admin.png
-1. screenshot_product.png
-2. screenshot_cart.png
-3. screenshot_checkout.png
+1. admin screen ![screenshot for admin](/assets/screenshot_admin.png)
+2. quantity on product ![screenshot for admin](/assets/screenshot_product.png)
+3. quantity on cart ![cart](/assets/screenshot_cart.png)
+4. quantity on checkout ![quantity on checkout](/assets/screenshot_checkout.png)
 
 == Changelog ==
 
