@@ -57,9 +57,11 @@ allowed back orders, the defined quantity list will shown, whatever quantity in 
 * Initial public release.
 * Add fixed quantity to product
 
-
 = 1.0.2 =
 * add screenshot
+
+= 1.0.3 =
+* link screenshot to github
 
 == Upgrade Notice ==
 
