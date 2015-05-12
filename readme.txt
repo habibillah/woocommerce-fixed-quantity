@@ -46,10 +46,10 @@ allowed back orders, the defined quantity list will shown, whatever quantity in 
 
 == Screenshots ==
 
-1. admin screen ![screenshot for admin](/assets/screenshot_admin.png)
-2. quantity on product ![screenshot for admin](/assets/screenshot_product.png)
-3. quantity on cart ![cart](/assets/screenshot_cart.png)
-4. quantity on checkout ![quantity on checkout](/assets/screenshot_checkout.png)
+1. admin screen ![screenshot for admin](https://raw.githubusercontent.com/habibillah/woocommerce-fixed-quantity/master/assets/screenshots/admin.png)
+2. quantity on product ![screenshot for admin](https://raw.githubusercontent.com/habibillah/woocommerce-fixed-quantity/master/assets/screenshots/product.png)
+3. quantity on cart ![cart](https://raw.githubusercontent.com/habibillah/woocommerce-fixed-quantity/master/assets/screenshots/cart.png)
+4. quantity on checkout ![quantity on checkout](https://raw.githubusercontent.com/habibillah/woocommerce-fixed-quantity/master/assets/screenshots/checkout.png)
 
 == Changelog ==
 
@@ -57,9 +57,11 @@ allowed back orders, the defined quantity list will shown, whatever quantity in 
 * Initial public release.
 * Add fixed quantity to product
 
-
 = 1.0.2 =
 * add screenshot
+
+= 1.0.3 =
+* link screenshot to github
 
 == Upgrade Notice ==
 
