@@ -46,21 +46,18 @@ allowed back orders, the defined quantity list will shown, whatever quantity in 
 
 == Screenshots ==
 
-1. /assets/screenshots/admin.png
-1. /assets/screenshots/product.png
-2. /assets/screenshots/cart.png
-3. /assets/screenshots/checkout.png
+1. /assets/screenshot_admin.png
+1. /assets/screenshot_product.png
+2. /assets/screenshot_cart.png
+3. /assets/screenshot_checkout.png
 
 == Changelog ==
 
-= 1.0.1 =
+= 1.0 =
 * Initial public release.
 * Add fixed quantity to product
 
-= 1.0.2 =
-* Move screenshot location
-
 == Upgrade Notice ==
 
-= 1.0.1 =
+= 1.0 =
 This is the initial public release. Fill free to ask, report bugs, etc.
