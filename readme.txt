@@ -3,7 +3,7 @@ Contributors: habibillah
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JXW9V2RRZNDXW
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
-Tested up to: 4.1.0
+Tested up to: 4.1
 Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -46,10 +46,10 @@ allowed back orders, the defined quantity list will shown, whatever quantity in 
 
 == Screenshots ==
 
-1. admin screen ![screenshot for admin](https://raw.githubusercontent.com/habibillah/woocommerce-fixed-quantity/master/assets/screenshots/admin.png)
-2. quantity on product ![screenshot for admin](https://raw.githubusercontent.com/habibillah/woocommerce-fixed-quantity/master/assets/screenshots/product.png)
-3. quantity on cart ![cart](https://raw.githubusercontent.com/habibillah/woocommerce-fixed-quantity/master/assets/screenshots/cart.png)
-4. quantity on checkout ![quantity on checkout](https://raw.githubusercontent.com/habibillah/woocommerce-fixed-quantity/master/assets/screenshots/checkout.png)
+1. admin screen
+2. quantity on product
+3. quantity on cart
+4. quantity on checkout
 
 == Changelog ==
 

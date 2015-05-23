@@ -5,10 +5,6 @@ assets/js/admin-woofix.js -text
 assets/js/admin-woofix.js~ -text
 assets/js/jquery.serializejson.min.js -text
 assets/js/woofix.js -text
-assets/screenshots/admin.png -text
-assets/screenshots/cart.png -text
-assets/screenshots/checkout.png -text
-assets/screenshots/product.png -text
 classes/admin-fixed-quantity-price.php -text
 classes/client-fixed-quantity-price.php -text
 classes/client-fixed-quantity-price.php~ -text
