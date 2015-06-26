@@ -38,13 +38,29 @@ jQuery(document).ready(function($) {
 
     $('#woofix_add_price').on('click', function() {
 
-        if ($('#_regular_price').val() == '') {
+        if ($('#_regular_price').val() == '' || $('#_regular_price').val() <= 0) {
             alert ('Please add regular price.');
             return false;
         }
         $('#woofix_template').find('tr').clone().appendTo('#woofix_price_table tbody');
 
         regenerateIndex();
+    });
+    
+    $('#_regular_price').on('change', function() {
+        var regularPrice = $(this).val();
+        if (!isNaN(regularPrice) && parseFloat(regularPrice) > 0) {
+            
+            $('input[name*="woofix_price"]').each(function() {
+                var discount = $(this).closest('tr').find('input[name*="woofix_disc"]').val();
+                if (discount == "" || isNaN(discount) || parseFloat(discount) > 100 || parseFloat(discount) < 0) {
+                    discount = 0;
+                }
+                $(this).val((regularPrice -  ((discount/100) * regularPrice)).toFixed(2));
+
+                regenerateData();                
+            });
+        }
     });
 
     $(woofixPriceTableSelector).on('click', '.woofix_delete', function() {

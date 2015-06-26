@@ -3,8 +3,8 @@ Contributors: habibillah
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JXW9V2RRZNDXW
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
-Tested up to: 4.1
-Stable tag: 1.0
+Tested up to: 4.2
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,11 @@ allowed back orders, the defined quantity list will shown, whatever quantity in 
 
 = 1.0.3 =
 * link screenshot to github
+
+= 1.0.5 =
+* automatic change fixed qty price if regular price changed
+* automatic update cart when quantity changed in cart
+* flexible item description template
 
 == Upgrade Notice ==
 

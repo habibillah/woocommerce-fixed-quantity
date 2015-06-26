@@ -21,7 +21,13 @@ $data = WoofixUtility::isFixedQtyPrice($product->id);
                 <?php
                 $price = wc_price($item['woofix_price']);
                 $total = wc_price($item['woofix_price'] * $item['woofix_qty']);
-                echo "{$item['woofix_qty']} {$item['woofix_desc']} (@{$price})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$total}&nbsp;&nbsp;&nbsp;";
+                $description_template = empty($item['woofix_desc'])? "{qty} items @{price} {total}" : str_replace(' ', '&nbsp;', $item['woofix_desc']);
+                $description = str_replace(array('{qty}', '{price}', '{total}'), array($item['woofix_qty'],  $price, $total), $description_template);
+                if ($description_template == $description) {
+                    echo "{$item['woofix_qty']} $description @$price &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $total";
+                } else {
+                    echo $description;
+                }
                 ?>
             </option>
 
