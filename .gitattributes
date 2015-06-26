@@ -7,7 +7,6 @@ assets/js/jquery.serializejson.min.js -text
 assets/js/woofix.js -text
 classes/admin-fixed-quantity-price.php -text
 classes/client-fixed-quantity-price.php -text
-classes/client-fixed-quantity-price.php~ -text
 classes/woofix-utility.php -text
 /readme.txt -text
 views/html-admin-meta-box.php -text

@@ -46,7 +46,7 @@ if (!class_exists('WooClientFixedQuantity')) {
                 $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
                 if ($fixedPriceData !== false) {
 
-                    $input_html = '<select name="cart[' . $cart_item_key . '][qty]" class="input-text qty text">';
+                    $input_html = '<select name="cart[' . $cart_item_key . '][qty]" class="input-text qty text woofix_qty_on_cart">';
                     foreach ($fixedPriceData['woofix'] as $item) {
 
                         $selected = ($item['woofix_qty'] == $cart_item['quantity']);
