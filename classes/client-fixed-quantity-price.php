@@ -54,7 +54,18 @@ if (!class_exists('WooClientFixedQuantity')) {
                         $total = wc_price($item['woofix_price'] * $item['woofix_qty']);
 
                         $input_html .= '<option value="' . $item['woofix_qty'] . '" ' . (($selected)? 'selected' : '') . '>';
-                        $input_html .= "{$item['woofix_qty']} {$item['woofix_desc']} (@{$price})&nbsp;&nbsp;&nbsp;{$total}&nbsp;";
+
+                        $price = wc_price($item['woofix_price']);
+                        $total = wc_price($item['woofix_price'] * $item['woofix_qty']);
+                        $description_template = empty($item['woofix_desc'])? "{qty} items @{price} {total}" : str_replace(' ', '&nbsp;', $item['woofix_desc']);
+                        $description = str_replace(array('{qty}', '{price}', '{total}'), array($item['woofix_qty'],  $price, $total), $description_template);
+                        if ($description_template == $description) {
+                            $input_html .= "{$item['woofix_qty']} $description @$price &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $total";
+                        } else {
+                            $input_html .= $description;
+                        }
+
+                        //$input_html .= "{$item['woofix_qty']} {$item['woofix_desc']} (@{$price})&nbsp;&nbsp;&nbsp;{$total}&nbsp;";
                         $input_html .= '</option>';
                     }
                     $input_html .= '</select>';
