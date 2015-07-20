@@ -65,7 +65,6 @@ if (!class_exists('WooClientFixedQuantity')) {
                             $input_html .= $description;
                         }
 
-                        //$input_html .= "{$item['woofix_qty']} {$item['woofix_desc']} (@{$price})&nbsp;&nbsp;&nbsp;{$total}&nbsp;";
                         $input_html .= '</option>';
                     }
                     $input_html .= '</select>';
