@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Fixed Quantity
  * Plugin URI: http://habibillah.github.io/woocommerce-fixed-quantity/
  * Description: Customize price based on fixed quantity.
- * Version: 1.0.5
+ * Version: 1.0.6
  * Author: Habibillah
  * Author URI: http://habibillah.kalicode.com/
  * Requires at least: 3.0.1
