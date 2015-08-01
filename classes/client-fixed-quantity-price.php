@@ -98,7 +98,7 @@ if (!class_exists('WooClientFixedQuantity')) {
             global $product;
             $productId = WoofixUtility::getActualId($product);
             if (WoofixUtility::isFixedQtyPrice($productId) !== false) {
-                return __('Read more', 'woofix');
+                return apply_filters('woofix_product_add_to_cart_text', __('Select Options', 'woofix'));
             }
             return $text;
         }
