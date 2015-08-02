@@ -42,15 +42,18 @@ if (!class_exists('WooAdminFixedQuantity')) {
         
         function filter_products($output)
         {
-            $xml = new SimpleXMLElement(html_entity_decode($output));
-            if ($xml !== false) {
-                $wooSticker = $xml->addChild('option', __('Fixed Qty', 'woofix'));
-                $wooSticker->addAttribute('value', '_woofix');
+            $html = new DOMDocument();
+            if ($html->loadHTML(mb_convert_encoding($output, 'HTML-ENTITIES', 'UTF-8'))) {
+                $element = $html->createElement('option', __('Fixed Qty', 'woofix'));
+                $element->setAttribute('value', '_woofix');
                 if (!empty($_GET['product_type']) && $_GET['product_type'] == '_woofix') {
-                    $wooSticker->addAttribute('selected', 'selected');
+                    $element->setAttribute('selected', 'selected');
                 }
-                $output = $xml->asXML();
+                $select_node = $html->getElementsByTagName('select')->item(0);
+                $select_node->appendChild($element);
+                $output = $html->saveXML($select_node);
             }
+
             return $output;
         }
 
