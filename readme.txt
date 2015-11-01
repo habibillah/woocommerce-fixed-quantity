@@ -19,6 +19,10 @@ purchase with unlisted quantity.
 This also will avoid **Sale Price** form in **General** tab, but will add the discount/specific price directly when
 define fixed quantity list.
 
+This project supported by:
+* [Kalicode Sudio](http://www.kalicode.com)
+* [PhpStorm Free Open Source License](https://www.jetbrains.com/buy/opensource/?product=phpstorm)
+
 How to use
 ------------------------
 
