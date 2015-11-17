@@ -27,12 +27,14 @@ if (!class_exists('WooClientFixedQuantity')) {
             add_filter('woocommerce_cart_item_quantity', array(&$this, 'filter_woocommerce_cart_item_quantity'), 10, 2);
 
             add_action('woocommerce_before_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
-            add_action('woocommerce_calculate_totals', array(&$this, 'action_after_calculate_totals'), 10, 1);
+            add_action('woocommerce_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
+            add_action('woocommerce_after_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
+            add_action('woocommerce_cart_loaded_from_session', array(&$this, 'action_before_calculate_totals'), 10, 1);
 
             if (version_compare(WOOCOMMERCE_VERSION, "2.1.0") >= 0) {
-                add_filter('woocommerce_cart_item_price', array(&$this, 'filter_item_price'), 20, 2);
+                add_filter('woocommerce_cart_item_price', array(&$this, 'filter_item_price'), 20, 3);
             } else {
-                add_filter('woocommerce_cart_item_price_html', array(&$this, 'filter_item_price'), 20, 2);
+                add_filter('woocommerce_cart_item_price_html', array(&$this, 'filter_item_price'), 20, 3);
             }
         }
 
@@ -122,15 +124,16 @@ if (!class_exists('WooClientFixedQuantity')) {
          *
          * @param $price
          * @param $cart_item
+         * @param $cart_item_key
          * @return string
          */
-        public function filter_item_price($price, $cart_item)
+        public function filter_item_price($price, $cart_item, $cart_item_key)
         {
             if (empty($cart_item['data'])) {
                 return $price;
             }
 
-            $_product = $cart_item['data'];
+            $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
             $productId = WoofixUtility::getActualId($_product);
             $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
             if ($fixedPriceData !== false) {
@@ -174,29 +177,6 @@ if (!class_exists('WooClientFixedQuantity')) {
                     foreach ($fixedPriceData['woofix'] as $data) {
                         if ($data['woofix_qty'] == $cart_item['quantity']) {
                             $cart_item['data']->set_price(floatval($data['woofix_price']));
-                        }
-                    }
-                }
-            }
-        }
-
-        /**
-         * Hook to woocommerce_calculate_totals action.
-         *
-         * @param WC_Cart $cart
-         * @return WC_Cart
-         */
-        public function action_after_calculate_totals(WC_Cart $cart)
-        {
-            foreach ($cart->get_cart() as $cart_item_key => $cart_item) {
-                $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
-
-                $productId = WoofixUtility::getActualId($_product);
-                $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
-                if ($fixedPriceData !== false) {
-                    foreach ($fixedPriceData['woofix'] as $data) {
-                        if ($data['woofix_qty'] == $cart_item['quantity']) {
-                            $cart_item['data']->set_price($data['woofix_price']);
                         }
                     }
                 }
