@@ -75,6 +75,9 @@ allowed back orders, the defined quantity list will shown, whatever quantity in 
 = 1.0.6 =
 * fix quantity selection on cart
 
+= 1.0.7 =
+* fix invalid price on mini cart
+
 == Upgrade Notice ==
 
 = 1.0.1 =
