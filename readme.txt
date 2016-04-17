@@ -20,32 +20,31 @@ This also will avoid **Sale Price** form in **General** tab, but will add the di
 define fixed quantity list.
 
 This project supported by:
-* [Kalicode Sudio](http://www.kalicode.com)
-* [PhpStorm Free Open Source License](https://www.jetbrains.com/buy/opensource/?product=phpstorm)
 
-How to use
-------------------------
+1. [Kalicode Sudio](http://www.kalicode.com)
+2. [PhpStorm Open Source License](https://www.jetbrains.com/buy/opensource/?product=phpstorm)
+
+= How to use =
 
 1. When add/ edit product, make sure you have add **Regular Price** in general tab
 2. Go to **Fixed Quantity Price** and define the list of various quantity allowed
 
-Limitations
-------------------------
+= Limitations =
 
-Right now this plugins has limitations that not check **Stock Qty**. So when **Stock status** is **In stock** or
-allowed back orders, the defined quantity list will shown, whatever quantity in **Stock Qty**.
+Right now this plugins has limitations that not check **Stock Qty**. So when stock status is **In stock** or
+**Allowed Back Orders", the defined quantity list will shown, whatever quantity in **Stock Qty**.
 
 == Installation ==
 
 1. unzip downloaded `woocommerce-fixed-quantity` plugin
 2. upload `woocommerce-fixed-quantity` to the `/wp-content/plugins/` directory
-3. Activate the plugin through the 'Plugins' menu in WordPress
+3. Activate the plugin through the **Plugins** menu in WordPress
 
 == Frequently Asked Questions ==
 
 = How can I change the listbox template? =
 
-1. copy `/wp-content/plugins/woocommerce-fixed-quantity/woocommerce/ directory to `/wp-content/themes/[your-active-theme]/woocommerce-fixed-quantity`
+1. copy `/wp-content/plugins/woocommerce-fixed-quantity/woocommerce/` directory to `/wp-content/themes/[your-active-theme]/woocommerce-fixed-quantity`
 2. you may modify the files inside `/wp-content/themes/[your-active-theme]/woocommerce-fixed-quantity` directory to fit your need.
 
 == Screenshots ==
