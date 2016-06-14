@@ -1,10 +1,11 @@
 jQuery(document).ready(function($) {
 
     var woofixPriceTableSelector = '#woofix_price_table';
+    var inputWoofixSelector = 'input[name="_woofix"]';
 
     var regenerateData = function() {
         var data = $(woofixPriceTableSelector + ' :input').serializeJSON();
-        $('input[name="_woofix"]').val(JSON.stringify(data));
+        $(inputWoofixSelector).val(JSON.stringify(data));
     };
 
     var regenerateIndex = function() {
@@ -19,8 +20,8 @@ jQuery(document).ready(function($) {
 
     //=========================================
 
-    if ($('input[name="_woofix"]').length > 0) {
-        var existingVal = $('input[name="_woofix"]').val();
+    if ($(inputWoofixSelector).length > 0) {
+        var existingVal = $(inputWoofixSelector).val();
         if (existingVal != '') {
             existingVal = JSON.parse(existingVal);
             $.each(existingVal.woofix, function(key, value) {
@@ -37,8 +38,8 @@ jQuery(document).ready(function($) {
     }
 
     $('#woofix_add_price').on('click', function() {
-
-        if ($('#_regular_price').val() == '' || $('#_regular_price').val() <= 0) {
+        var regularPrice = $('#_regular_price').val();
+        if (regularPrice == '' || regularPrice <= 0) {
             alert ('Please add regular price.');
             return false;
         }
@@ -115,5 +116,19 @@ jQuery(document).ready(function($) {
         $disc.val((((regularPrice - newVal) / regularPrice) * 100).toFixed());
 
         regenerateData();
+    });
+
+    var showHideWoofix = function () {
+        var productType = $('#product-type').val();
+        if (productType == 'simple') {
+            $('.woofix_options').show();
+        } else {
+            $('.woofix_options').hide();
+        }
+    };
+    showHideWoofix();
+
+    $('#product-type').change(function () {
+        showHideWoofix();
     });
 });

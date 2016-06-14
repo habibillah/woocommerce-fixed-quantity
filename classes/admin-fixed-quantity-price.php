@@ -32,6 +32,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
 
         public function add_product_data_panel()
         {
+            /** @noinspection PhpIncludeInspection */
             require_once plugin_dir_path($this->file) . 'views/html-admin-meta-box.php';
         }
 
@@ -59,6 +60,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
 
         function filter_query($query)
         {
+            /** @noinspection PhpUnusedLocalVariableInspection */
             global $typenow, $wp_query;
             if ($typenow == 'product') {
                 if ( isset( $query->query_vars['product_type'] ) ) {
