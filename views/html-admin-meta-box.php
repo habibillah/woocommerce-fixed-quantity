@@ -27,10 +27,10 @@ $custom_fields = get_post_custom($post->ID);
 
     <table id="woofix_template" class="woofix hidden">
         <tr>
-            <td><input type="text" class="woofix_input_desc" data-name="woofix_desc" value="{qty} items @{price} {total}" /></td>
-            <td><input type="text" class="woofix_input_qty" data-name="woofix_qty" /></td>
-            <td><input type="text" class="woofix_input_disc" data-name="woofix_disc" /></td>
-            <td><input type="text" class="woofix_input_price" data-name="woofix_price" /></td>
+            <td><input placeholder="" type="text" class="woofix_input_desc" data-name="woofix_desc" value="{qty} items @{price} {total}" /></td>
+            <td><input placeholder="" type="text" class="woofix_input_qty" data-name="woofix_qty" /></td>
+            <td><input placeholder="" type="text" class="woofix_input_disc" data-name="woofix_disc" /></td>
+            <td><input placeholder="" type="text" class="woofix_input_price" data-name="woofix_price" /></td>
             <td><a class="woofix_delete button"><?php _e('Remove', 'woofix'); ?></a></td>
         </tr>
     </table>

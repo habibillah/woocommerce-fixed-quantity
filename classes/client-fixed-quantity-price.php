@@ -52,13 +52,11 @@ if (!class_exists('WooClientFixedQuantity')) {
                     foreach ($fixedPriceData['woofix'] as $item) {
 
                         $selected = ($item['woofix_qty'] == $cart_item['quantity']);
-                        $price = wc_price($item['woofix_price']);
-                        $total = wc_price($item['woofix_price'] * $item['woofix_qty']);
-
                         $input_html .= '<option value="' . $item['woofix_qty'] . '" ' . (($selected)? 'selected' : '') . '>';
 
                         $price = wc_price($item['woofix_price']);
                         $total = wc_price($item['woofix_price'] * $item['woofix_qty']);
+
                         $description_template = empty($item['woofix_desc'])? "{qty} items @{price} {total}" : str_replace(' ', '&nbsp;', $item['woofix_desc']);
                         $description = str_replace(array('{qty}', '{price}', '{total}'), array($item['woofix_qty'],  $price, $total), $description_template);
                         if ($description_template == $description) {
@@ -153,7 +151,7 @@ if (!class_exists('WooClientFixedQuantity')) {
 
                 } else {
                     $price = "<span class='discount-info'>" .
-                        "<span class='old-price'><strike>$oldprice</strike></span> " .
+                        "<span class='old-price'><del>$oldprice</del></span>&nbsp;" .
                         "<span class='new-price'><strong>$discprice</strong></span></span>";
                 }
             }
