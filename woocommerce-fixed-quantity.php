@@ -20,6 +20,8 @@ if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get
 
 if (!class_exists('WooFixedQuantity')) {
 
+    define("WOOFIXCONF_DESC", "{qty} items @{price} {total}");
+
     class WooFixedQuantity
     {
         public $woo_admin_fixed_price;
@@ -45,6 +47,9 @@ if (!class_exists('WooFixedQuantity')) {
             }
 
             $this->woo_client_fixed_price = new WooClientFixedQuantity(__FILE__);
+
+            add_option("woofixconf_desc", WOOFIXCONF_DESC);
+            add_option("woofixconf_disc", '1');
         }
 
         public function load_admin_scripts()

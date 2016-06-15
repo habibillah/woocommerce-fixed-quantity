@@ -14,9 +14,57 @@ if (!class_exists('WooAdminFixedQuantity')) {
             add_filter('woocommerce_product_data_tabs', array(&$this, 'add_product_data_tab'));
             add_action('woocommerce_product_data_panels', array(&$this, 'add_product_data_panel'));
             add_action('woocommerce_process_product_meta', array(&$this, 'save_custom_fields'), 10);
-            
+            add_filter('woocommerce_get_sections_products', array(&$this, 'global_setting_section'));
+            add_filter('woocommerce_get_settings_products', array(&$this, 'global_setting_configuration'), 10, 2);
+
             add_filter('parse_query', array(&$this, 'filter_query'));
             add_filter('woocommerce_product_filters', array(&$this, 'filter_products'));
+        }
+
+        public function global_setting_configuration($settings, $current_section)
+        {
+            if ($current_section !== 'woofixconf')
+                return $settings;
+
+            $woofix_config = array();
+
+            $woofix_config[] = array(
+                'name' => __('Woocommerce Fixed Quantity Global Settings', 'woofix'),
+                'type' => 'title',
+                'desc' => __('The following options are used to configure Woocommerce Fixed Quantity globally', 'woofix'),
+                'id' => 'woofixconf_title'
+            );
+
+            $woofix_config[] = array(
+                'name'     => __('Qty Desc Template', 'woofix'),
+                'desc_tip' => __('The default template to show description on each quantity. Off course, you can change the template on each product.', 'woofix'),
+                'id'       => 'woofixconf_desc',
+                'type'     => 'text',
+                'class'    => 'input-text regular-input ',
+                'required' => true,
+                'desc'     => __('Available variable are: <code>{qty}</code>, <code>{price}</code>, and <code>{total}</code>', 'woofix'),
+            );
+
+            $woofix_config[] = array(
+                'name'     => __('Show discount info', 'woofix'),
+                'desc_tip' => __('Show discount info in both cart and checkout page.', 'woofix'),
+                'id'       => 'woofixconf_disc',
+                'type'     => 'checkbox',
+                'desc'     => __('Show discount info in both cart and checkout page.', 'woofix'),
+            );
+
+            $woofix_config[] = array(
+                'type' => 'sectionend',
+                'id' => 'woofixconf'
+            );
+
+            return $woofix_config;
+        }
+
+        public function global_setting_section($sections)
+        {
+            $sections['woofixconf'] = __('Fixed Quantity', 'woofix');
+            return $sections;
         }
 
         public function add_product_data_tab($tabs)
@@ -67,7 +115,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
                     if ( '_woofix' == $query->query_vars['product_type'] ) {
                         $query->query_vars['product_type']  = '';
                         $query->is_tax = false;
-                        $query->query_vars['meta_key']      = '_woofix';
+                        $query->query_vars['meta_key'] = '_woofix';
                     }
                 }
             }
