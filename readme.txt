@@ -31,7 +31,7 @@ This project supported by:
 = Limitations =
 
 Right now this plugins has limitations that not check **Stock Qty**. So when stock status is **In stock** or
-**Allowed Back Orders", the defined quantity list will shown, whatever quantity in **Stock Qty**.
+**Allowed Back Orders**, the defined quantity list will shown, whatever quantity in **Stock Qty**.
 
 == Installation ==
 
