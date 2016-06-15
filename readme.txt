@@ -77,6 +77,9 @@ Right now this plugins has limitations that not check **Stock Qty**. So when sto
 = 1.0.7 =
 * fix invalid price on mini cart
 
+= 1.0.8 =
+* add support for multi currency options
+
 == Upgrade Notice ==
 
 = 1.0.1 =
