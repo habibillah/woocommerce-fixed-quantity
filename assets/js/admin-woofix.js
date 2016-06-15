@@ -2,10 +2,15 @@
 
 jQuery(document).ready(function($) {
 
+    if (!woocommerce_admin)
+        var woocommerce_admin = {};
     if (!woocommerce_admin.mon_decimal_point)
         woocommerce_admin.mon_decimal_point = ".";
     if (!woocommerce_admin.decimal_point)
         woocommerce_admin.decimal_point = ".";
+
+    if (!woocommerce_admin_meta_boxes)
+        var woocommerce_admin_meta_boxes = {};
     if (!woocommerce_admin_meta_boxes.currency_format_num_decimals)
         woocommerce_admin_meta_boxes.currency_format_num_decimals = 2;
     if (!woocommerce_admin_meta_boxes.currency_format_decimal_sep)
