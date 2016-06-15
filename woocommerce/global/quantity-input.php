@@ -17,14 +17,21 @@ $data = WoofixUtility::isFixedQtyPrice($product->id);
             title="<?php _ex( 'Qty', 'Product quantity input tooltip', 'woocommerce' ); ?>"
             class="qty">
         <?php foreach ($data['woofix'] as $item): ?>
-            <option value="<?php echo $item['woofix_qty'] ?>" data-qty="<?php echo $item['woofix_qty'] ?>" data-price="<?php echo $item['woofix_price']; ?>">
+
+            <?php
+            $woofix_price = wc_format_decimal($item['woofix_price']);
+            $woofix_qty = $item['woofix_qty'];
+            $woofix_desc = empty($item['woofix_desc'])? "" : $item['woofix_desc'];
+            ?>
+
+            <option value="<?php echo $woofix_qty; ?>" data-qty="<?php echo $woofix_qty; ?>" data-price="<?php echo $woofix_price; ?>">
                 <?php
-                $price = wc_price($item['woofix_price']);
-                $total = wc_price($item['woofix_price'] * $item['woofix_qty']);
-                $description_template = empty($item['woofix_desc'])? "{qty} items @{price} {total}" : str_replace(' ', '&nbsp;', $item['woofix_desc']);
-                $description = str_replace(array('{qty}', '{price}', '{total}'), array($item['woofix_qty'],  $price, $total), $description_template);
+                $price = wc_price($woofix_price);
+                $total = wc_price($woofix_price * $woofix_qty);
+                $description_template = empty($woofix_desc)? "{qty} items @{price} {total}" : str_replace(' ', '&nbsp;', $woofix_desc);
+                $description = str_replace(array('{qty}', '{price}', '{total}'), array($woofix_qty,  $price, $total), $description_template);
                 if ($description_template == $description) {
-                    echo "{$item['woofix_qty']} $description @$price &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $total";
+                    echo "$woofix_qty $description @$price &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $total";
                 } else {
                     echo $description;
                 }
