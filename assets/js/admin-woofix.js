@@ -15,14 +15,27 @@ jQuery(document).ready(function($) {
     var inputWoofixSelector = 'input[name="_woofix"]';
 
     var regenerateData = function() {
-        var data = $(woofixPriceTableSelector + ' :input').serializeJSON();
+        var data = $(woofixPriceTableSelector + ' :input').serializeJSON({
+            "customTypes": {
+                "woodecimal": function (value) {
+                    return window.accounting.unformat(value, woocommerce_admin.mon_decimal_point);
+                }
+            }
+        });
         $(inputWoofixSelector).val(JSON.stringify(data));
     };
 
     var regenerateIndex = function() {
         $(woofixPriceTableSelector).find('tbody tr').each(function(index) {
             $(this).find('[data-name]').each(function() {
-                var inputName = 'woofix[' + index + '][' + $(this).data('name') + ']';
+                var name = $(this).data('name');
+                var inputName = 'woofix[' + index + '][' + name + ']';
+                if (name === "woofix_disc" || name === "woofix_price")
+                    inputName += ":woodecimal";
+
+                if (name === "woofix_qty")
+                    inputName += ":number";
+
                 $(this).attr('name', inputName);
                 $(this).attr('id', inputName);
             });
@@ -76,8 +89,8 @@ jQuery(document).ready(function($) {
                 var row = $('#woofix_template').find('tr').clone();
                 row.find('input[data-name="woofix_desc"]').val(value['woofix_desc']);
                 row.find('input[data-name="woofix_qty"]').val(value['woofix_qty']);
-                row.find('input[data-name="woofix_disc"]').val(value['woofix_disc']);
-                row.find('input[data-name="woofix_price"]').val(value['woofix_price']);
+                row.find('input[data-name="woofix_disc"]').val(formatNumberTosave(value['woofix_disc']));
+                row.find('input[data-name="woofix_price"]').val(formatNumberTosave(value['woofix_price']));
                 row.appendTo('#woofix_price_table tbody');
             });
 
@@ -127,7 +140,7 @@ jQuery(document).ready(function($) {
     $(woofixPriceTableSelector).on('change', 'input[name*="woofix_qty"]', function() {
         var newVal = $(this).val();
         if (newVal == "" || isNaN(newVal) || parseInt(newVal) < 0) {
-            newVal = 0;
+            newVal = 1;
         }
 
         $(this).val(parseInt(newVal));

@@ -51,7 +51,7 @@ if (!class_exists('WooClientFixedQuantity')) {
                     $input_html = '<select name="cart[' . $cart_item_key . '][qty]" class="input-text qty text woofix_qty_on_cart">';
                     foreach ($fixedPriceData['woofix'] as $item) {
 
-                        $woofix_price = wc_format_decimal($item['woofix_price']);
+                        $woofix_price = $item['woofix_price'];
                         $woofix_qty = $item['woofix_qty'];
                         $woofix_desc = empty($item['woofix_desc'])? '' : $item['woofix_desc'];
 
@@ -142,7 +142,7 @@ if (!class_exists('WooClientFixedQuantity')) {
                 $discount = 0;
                 foreach ($fixedPriceData['woofix'] as $disc) {
                     if ($disc['woofix_qty'] == $cart_item['quantity']) {
-                        $discount = wc_format_decimal($disc['woofix_disc']);
+                        $discount = $disc['woofix_disc'];
                     }
                 }
 
@@ -178,7 +178,7 @@ if (!class_exists('WooClientFixedQuantity')) {
                 if ($fixedPriceData !== false) {
                     foreach ($fixedPriceData['woofix'] as $data) {
                         if ($data['woofix_qty'] == $cart_item['quantity']) {
-                            $cart_item['data']->set_price(floatval(wc_format_decimal($data['woofix_price'])));
+                            $cart_item['data']->set_price(floatval($data['woofix_price']));
                         }
                     }
                 }
@@ -269,7 +269,7 @@ if (!class_exists('WooClientFixedQuantity')) {
 
                 foreach ($fixedPriceData['woofix'] as $disc) {
                     if ($disc['woofix_qty'] == $cart_item['quantity']) {
-                        $discount = wc_format_decimal($disc['woofix_disc']);
+                        $discount = $disc['woofix_disc'];
                     }
                 }
 
@@ -299,7 +299,7 @@ if (!class_exists('WooClientFixedQuantity')) {
 
                 foreach ($fixedPriceData['woofix'] as $disc) {
                     if ($disc['woofix_qty'] == $product['qty']) {
-                        $discount = wc_format_decimal($disc['woofix_disc']);
+                        $discount = $disc['woofix_disc'];
                     }
                 }
 
