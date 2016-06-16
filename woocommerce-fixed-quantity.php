@@ -64,8 +64,6 @@ if (!class_exists('WooFixedQuantity')) {
             wp_localize_script('woofix_admin_js', 'woofix_admin', $params);
 
             wp_enqueue_script('woofix_admin_js');
-
-            wp_enqueue_script('woofix_admin_js', plugins_url('/assets/js/admin-woofix.js', __FILE__), array('jquery'));
             wp_enqueue_script('woofix_admin_serialize_json_js', plugins_url('/assets/js/jquery.serializejson.min.js', __FILE__), array('jquery'));
 
             wp_enqueue_style('woofix_admin_css', plugins_url('/assets/css/admin-woofix.css', __FILE__));
@@ -73,7 +71,7 @@ if (!class_exists('WooFixedQuantity')) {
         
         public function load_public_scripts()
         {
-            wp_enqueue_script('woofix_admin_js', plugins_url('/assets/js/woofix.js', __FILE__), array('jquery'));
+            wp_enqueue_script('woofix_public_js', plugins_url('/assets/js/woofix.js', __FILE__), array('jquery'));
         }
     }
 }
