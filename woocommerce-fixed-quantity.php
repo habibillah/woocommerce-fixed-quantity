@@ -20,7 +20,11 @@ if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get
 
 if (!class_exists('WooFixedQuantity')) {
 
-    define("WOOFIXCONF_DESC", "{qty} items @{price} {total}");
+    define("WOOFIXCONF_QTY_DESC", "{qty} items @{price} {total}");
+    define("WOOFIXCONF_SHOW_DISC", "yes");
+    define("WOOFIXOPT_QTY_DESC", "woofix_qty_desc");
+    define("WOOFIXOPT_SHOW_DISC", "woofix_show_disc");
+
 
     class WooFixedQuantity
     {
@@ -47,13 +51,20 @@ if (!class_exists('WooFixedQuantity')) {
             }
 
             $this->woo_client_fixed_price = new WooClientFixedQuantity(__FILE__);
-
-            add_option("woofixconf_desc", WOOFIXCONF_DESC);
-            add_option("woofixconf_disc", '1');
         }
 
         public function load_admin_scripts()
         {
+            $params = array(
+                'decimal_point' => wc_get_price_decimal_separator(),
+                'num_decimals' => wc_get_price_decimals()
+            );
+
+            wp_register_script('woofix_admin_js', plugins_url('/assets/js/admin-woofix.js', __FILE__), array('jquery'));
+            wp_localize_script('woofix_admin_js', 'woofix_admin', $params);
+
+            wp_enqueue_script('woofix_admin_js');
+
             wp_enqueue_script('woofix_admin_js', plugins_url('/assets/js/admin-woofix.js', __FILE__), array('jquery'));
             wp_enqueue_script('woofix_admin_serialize_json_js', plugins_url('/assets/js/jquery.serializejson.min.js', __FILE__), array('jquery'));
 
