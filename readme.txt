@@ -34,6 +34,15 @@ This project supported by:
 Right now this plugins has limitations that not check **Stock Qty**. So when stock status is **In stock** or
 **Allowed Back Orders**, the defined quantity list will shown, whatever quantity in **Stock Qty**.
 
+= Available Filters Hook =
+
+1. woofix_quantity_is_not_valid
+2. woofix_product_add_to_cart_text
+
+= Available Actions Hook =
+
+No action available
+
 == Installation ==
 
 1. unzip downloaded `woocommerce-fixed-quantity` plugin
@@ -87,10 +96,13 @@ Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 * add support for multi currency options
 
 = 1.0.9 =
-* add filters: woofix_quantity_is_not_valid
+* add filters: woofix_quantity_is_not_valid, woofix_product_add_to_cart_text
 * add global configuration at `WooCommerce Settings >> Products >> Fixed Quantity`
 * add show hide discount info in global setting
 * move discount info to template
+
+= 1.1.0 =
+* Simpilfy quantity input template
 
 == Upgrade Notice ==
 
