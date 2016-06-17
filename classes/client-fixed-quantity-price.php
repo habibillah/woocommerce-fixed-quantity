@@ -48,32 +48,23 @@ if (!class_exists('WooClientFixedQuantity')) {
                 $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
                 if ($fixedPriceData !== false) {
 
-                    $input_html = '<select name="cart[' . $cart_item_key . '][qty]" class="input-text qty text woofix_qty_on_cart">';
-                    foreach ($fixedPriceData['woofix'] as $item) {
+                    /** @noinspection PhpUnusedLocalVariableInspection */
+                    $input_name = 'cart[' . $cart_item_key . '][qty]';
 
-                        $woofix_price = $item['woofix_price'];
-                        $woofix_qty = $item['woofix_qty'];
-                        $woofix_desc = empty($item['woofix_desc'])? '' : $item['woofix_desc'];
+                    /** @noinspection PhpUnusedLocalVariableInspection */
+                    $product = $_product;
 
-                        $selected = ($woofix_qty == $cart_item['quantity']);
-                        $input_html .= '<option value="' . $woofix_qty . '" ' . (($selected)? 'selected' : '') . '>';
+                    /** @noinspection PhpUnusedLocalVariableInspection */
+                    $selected_quantity = $cart_item['quantity'];
 
-                        $price = wc_price($woofix_price);
-                        $total = wc_price($woofix_price * $woofix_qty);
-
-                        $description_template = empty($woofix_desc)? "{qty} items @{price} {total}" : str_replace(' ', '&nbsp;', $woofix_desc);
-                        $description = str_replace(array('{qty}', '{price}', '{total}'), array($woofix_qty,  $price, $total), $description_template);
-                        if ($description_template == $description) {
-                            $input_html .= "$woofix_qty $description @$price &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $total";
-                        } else {
-                            $input_html .= $description;
-                        }
-
-                        $input_html .= '</option>';
+                    $template = $this->woofix_locate_template( 'global/quantity-input.php' );
+                    if ( $template !== false ) {
+                        ob_start();
+                        /** @noinspection PhpIncludeInspection */
+                        include($template);
+                        $input_html = ob_get_clean();
                     }
-                    $input_html .= '</select>';
                 }
-
             }
 
             return $input_html;

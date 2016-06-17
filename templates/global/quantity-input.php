@@ -6,10 +6,14 @@
  *
  * @var string $input_name
  * @var WC_Product $product
+ * @var int $selected_quantity
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-global $product;
+if (empty($product))
+    global $product;
+
+$selected_quantity = !empty($selected_quantity)? $selected_quantity : '';
 
 $data = WoofixUtility::isFixedQtyPrice($product->id);
 ?>
@@ -35,7 +39,7 @@ $data = WoofixUtility::isFixedQtyPrice($product->id);
 
             <option value="<?php echo $woofix_qty; ?>"
                     data-qty="<?php echo $woofix_qty; ?>"
-                    data-price="<?php echo $woofix_price; ?>">
+                    data-price="<?php echo $woofix_price; ?>" <?php echo ($selected_quantity == $woofix_qty)? "selected" : ""; ?>>
                 
                 <?php echo $description; ?>
             </option>
