@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
 Tested up to: 4.5
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,13 +39,19 @@ Right now this plugins has limitations that not check **Stock Qty**. So when sto
 1. unzip downloaded `woocommerce-fixed-quantity` plugin
 2. upload `woocommerce-fixed-quantity` to the `/wp-content/plugins/` directory
 3. Activate the plugin through the **Plugins** menu in WordPress
+4. Global settings for this plugin located at `WooCommerce Settings >> Products >> Fixed Quantity`
 
 == Frequently Asked Questions ==
 
-= How can I change the listbox template? =
+= How can I change the listbox and discount templates? =
 
-1. copy `/wp-content/plugins/woocommerce-fixed-quantity/woocommerce/` directory to `/wp-content/themes/[your-active-theme]/woocommerce-fixed-quantity`
-2. you may modify the files inside `/wp-content/themes/[your-active-theme]/woocommerce-fixed-quantity` directory to fit your need.
+1. copy `/wp-content/plugins/woocommerce-fixed-quantity/templates/` directory to `/wp-content/themes/[your-theme]/woocommerce-fixed-quantity`
+2. you may modify the files inside `/wp-content/themes/[your-theme]/woocommerce-fixed-quantity` directory to fit your need.
+
+= How can I hide discount info both Cart and Checkout pages? =
+
+Go to global settings for this plugin located at `WooCommerce Settings >> Products >> Fixed Quantity`.
+Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 
 == Screenshots ==
 
@@ -82,6 +88,9 @@ Right now this plugins has limitations that not check **Stock Qty**. So when sto
 
 = 1.0.9 =
 * add filters: woofix_quantity_is_not_valid
+* add global configuration at `WooCommerce Settings >> Products >> Fixed Quantity`
+* add show hide discount info in global setting
+* move discount info to template
 
 == Upgrade Notice ==
 
