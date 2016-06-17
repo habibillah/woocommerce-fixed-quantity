@@ -258,27 +258,32 @@ if (!class_exists('WooClientFixedQuantity')) {
          */
         public function filter_subtotal_price($price, $cart_item)
         {
-            if (empty($cart_item['data'])) {
-                return $price;
-            }
+            if (!empty($cart_item['data']) && get_option(WOOFIXOPT_SHOW_DISC) === WOOFIXCONF_SHOW_DISC) {
 
-            $_product = $cart_item['data'];
-            $productId = WoofixUtility::getActualId($_product);
-            $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
-            if ($fixedPriceData !== false) {
-                $discount = 0;
+                $_product = $cart_item['data'];
+                $productId = WoofixUtility::getActualId($_product);
+                $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
+                if ($fixedPriceData !== false) {
 
-                foreach ($fixedPriceData['woofix'] as $disc) {
-                    if ($disc['woofix_qty'] == $cart_item['quantity']) {
-                        $discount = $disc['woofix_disc'];
+                    /** @noinspection PhpUnusedLocalVariableInspection */
+                    $discount = "0%";
+
+                    foreach ( $fixedPriceData['woofix'] as $disc ) {
+                        if ( $disc['woofix_qty'] == $cart_item['quantity'] ) {
+
+                            /** @noinspection PhpUnusedLocalVariableInspection */
+                            $discount = $disc['woofix_disc'] . "%";
+                        }
+                    }
+
+                    $template = $this->woofix_locate_template( 'discount-info.php' );
+                    if ( $template !== false ) {
+                        ob_start();
+                        /** @noinspection PhpIncludeInspection */
+                        include($template);
+                        $price = ob_get_clean();
                     }
                 }
-
-                $newPrice = "<span class='discount-info'><span class='new-price'>$price <span style='color: #4AB915; font-weight: bold;'>";
-                $newPrice .= sprintf(__("(Incl. %s%% discount)", "woofix"), $discount) . "</span></span>";
-                $newPrice .= "</span>";
-
-                return $newPrice;
             }
 
             return $price;
@@ -350,6 +355,26 @@ if (!class_exists('WooClientFixedQuantity')) {
             if (!$template)
                 $template = $_template;
 
+            return $template;
+        }
+
+        function woofix_locate_template($template_name)
+        {
+            // search template in theme
+            $theme_plugin_template = 'woocommerce-fixed-quantity/' . $template_name;
+            $template = locate_template($theme_plugin_template, false);
+            
+            if (!$template) {
+                // get default template
+                $plugin_template = plugin_dir_path($this->file) . 'templates/' . $template_name;
+                if (!file_exists($plugin_template)) {
+                    _doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $plugin_template ), '2.1' );
+                    return false;
+                }
+
+                $template = $plugin_template;
+            }
+            
             return $template;
         }
     }
