@@ -80,6 +80,9 @@ Right now this plugins has limitations that not check **Stock Qty**. So when sto
 = 1.0.8 =
 * add support for multi currency options
 
+= 1.0.9 =
+* add filters: woofix_quantity_is_not_valid
+
 == Upgrade Notice ==
 
 = 1.0.1 =

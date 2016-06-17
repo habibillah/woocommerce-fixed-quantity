@@ -214,8 +214,9 @@ if (!class_exists('WooClientFixedQuantity')) {
                     $product_title = $product->post->post_title;
 
                     $additionalMessage = (empty($qtyInCart) || $qtyInCart < 1) ? '' : sprintf(__('You have added %s qty in your cart.', 'woofix'), $qtyInCart);
-                    wc_add_notice(sprintf(__("Product %s can be ordered using this listed quantity : %s. %s", "woofix"),
-                        $product_title, implode(', ', $quantityList), $additionalMessage), 'error');
+                    $message = sprintf(__("Product %s can be ordered using this listed quantity : %s. %s", "woofix"), $product_title, implode(', ', $quantityList), $additionalMessage);
+
+                    wc_add_notice(apply_filters('woofix_quantity_is_not_valid', $message), 'error');
                 }
             }
 
@@ -240,8 +241,8 @@ if (!class_exists('WooClientFixedQuantity')) {
                 if (!$passed) {
                     $product_title = $product->post->post_title;
 
-                    wc_add_notice(sprintf(__("Product %s can be ordered using this listed quantity : %s.", "woofix"),
-                        $product_title, implode(', ', $quantityList)), 'error');
+                    $message = sprintf(__("Product %s can be ordered using this listed quantity : %s.", "woofix"), $product_title, implode(', ', $quantityList));
+                    wc_add_notice(apply_filters('woofix_quantity_is_not_valid', $message), 'error');
                 }
             }
 
