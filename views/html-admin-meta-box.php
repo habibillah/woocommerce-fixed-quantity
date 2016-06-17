@@ -1,9 +1,9 @@
 <?php
 global $post;
 $custom_fields = get_post_custom($post->ID);
-$woofixconf_desc = get_option('woofixconf_desc');
-if (empty($woofixconf_desc))
-    $woofixconf_desc = WOOFIXCONF_DESC;
+$woofix_qty_desc = get_option(WOOFIXOPT_QTY_DESC);
+if (empty($woofix_qty_desc))
+    $woofix_qty_desc = WOOFIXCONF_QTY_DESC;
 ?>
 
 <div id="woofix_product_data" class="panel woocommerce_options_panel wc-metaboxes-wrapper">
@@ -30,7 +30,7 @@ if (empty($woofixconf_desc))
 
     <table id="woofix_template" class="woofix hidden">
         <tr>
-            <td><input placeholder="" type="text" class="woofix_input_desc" data-name="woofix_desc" value="<?php echo $woofixconf_desc; ?>" /></td>
+            <td><input placeholder="" type="text" class="woofix_input_desc" data-name="woofix_desc" value="<?php echo $woofix_qty_desc; ?>" /></td>
             <td><input placeholder="" type="text" class="woofix_input_qty" data-name="woofix_qty" /></td>
             <td><input placeholder="" type="text" class="woofix_input_disc" data-name="woofix_disc" /></td>
             <td><input placeholder="" type="text" class="woofix_input_price" data-name="woofix_price" /></td>

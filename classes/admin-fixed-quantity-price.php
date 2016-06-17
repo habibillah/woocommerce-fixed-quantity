@@ -38,7 +38,8 @@ if (!class_exists('WooAdminFixedQuantity')) {
             $woofix_config[] = array(
                 'name'     => __('Qty Desc Template', 'woofix'),
                 'desc_tip' => __('The default template to show description on each quantity. Off course, you can change the template on each product.', 'woofix'),
-                'id'       => 'woofixconf_desc',
+                'id'       => WOOFIXOPT_QTY_DESC,
+                'default'  => WOOFIXCONF_QTY_DESC,
                 'type'     => 'text',
                 'class'    => 'input-text regular-input ',
                 'required' => true,
@@ -48,7 +49,8 @@ if (!class_exists('WooAdminFixedQuantity')) {
             $woofix_config[] = array(
                 'name'     => __('Show discount info', 'woofix'),
                 'desc_tip' => __('Show discount info in both cart and checkout page.', 'woofix'),
-                'id'       => 'woofixconf_disc',
+                'id'       => WOOFIXOPT_SHOW_DISC,
+                'default'  => WOOFIXCONF_SHOW_DISC,
                 'type'     => 'checkbox',
                 'desc'     => __('Show discount info in both cart and checkout page.', 'woofix'),
             );
