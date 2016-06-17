@@ -298,22 +298,31 @@ if (!class_exists('WooClientFixedQuantity')) {
          */
         public function order_formatted_line_subtotal($price, $product)
         {
-            $productId = WoofixUtility::getActualId($product);
-            $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
-            if ($fixedPriceData !== false) {
-                $discount = 0;
+            if (get_option(WOOFIXOPT_SHOW_DISC) === WOOFIXCONF_SHOW_DISC) {
 
-                foreach ($fixedPriceData['woofix'] as $disc) {
-                    if ($disc['woofix_qty'] == $product['qty']) {
-                        $discount = $disc['woofix_disc'];
+                $productId = WoofixUtility::getActualId($product);
+                $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
+                if ($fixedPriceData !== false) {
+
+                    /** @noinspection PhpUnusedLocalVariableInspection */
+                    $discount = "0%";
+
+                    foreach ($fixedPriceData['woofix'] as $disc) {
+                        if ($disc['woofix_qty'] == $product['qty']) {
+
+                            /** @noinspection PhpUnusedLocalVariableInspection */
+                            $discount = $disc['woofix_disc'] . "%";
+                        }
+                    }
+
+                    $template = $this->woofix_locate_template( 'discount-info.php' );
+                    if ( $template !== false ) {
+                        ob_start();
+                        /** @noinspection PhpIncludeInspection */
+                        include($template);
+                        $price = ob_get_clean();
                     }
                 }
-
-                $newPrice = "<span class='discount-info'><span class='new-price'>$price <span style='color: #4AB915; font-weight: bold;'>";
-                $newPrice .= sprintf(__("(Incl. %s%% discount)", "woofix"), $discount) . "</span></span>";
-                $newPrice .= "</span>";
-
-                return $newPrice;
             }
 
             return $price;
