@@ -345,7 +345,7 @@ if (!class_exists('WooClientFixedQuantity')) {
                     $theme_plugin_template = 'woocommerce-fixed-quantity/' . $template_name;
                     $template = locate_template(array($theme_plugin_template));
 
-                    $plugin_template = plugin_dir_path($this->file) . 'woocommerce/' . $template_name;
+                    $plugin_template = plugin_dir_path($this->file) . 'templates/' . $template_name;
                     if (!$template && file_exists($plugin_template))
                         $template = $plugin_template;
                 }
