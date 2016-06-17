@@ -48,11 +48,10 @@ if (!class_exists('WooAdminFixedQuantity')) {
 
             $woofix_config[] = array(
                 'name'     => __('Show discount info', 'woofix'),
-                'desc_tip' => __('Show discount info in both cart and checkout page.', 'woofix'),
                 'id'       => WOOFIXOPT_SHOW_DISC,
                 'default'  => WOOFIXCONF_SHOW_DISC,
                 'type'     => 'checkbox',
-                'desc'     => __('Show discount info in both cart and checkout page.', 'woofix'),
+                'desc'     => __('Show discount info in both cart and checkout page. See FAQ to customize discount info template.', 'woofix'),
             );
 
             $woofix_config[] = array(
