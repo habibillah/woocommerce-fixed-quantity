@@ -22,8 +22,13 @@ if (!class_exists('WooFixedQuantity')) {
 
     define("WOOFIXCONF_QTY_DESC", "{qty} items @{price} {total}");
     define("WOOFIXCONF_SHOW_DISC", "yes");
+    define("WOOFIXCONF_DEFAULT_ROLE", "customer");
+    define("WOOFIXCONF_AVAILABLE_ROLES", "");
+
     define("WOOFIXOPT_QTY_DESC", "woofix_qty_desc");
     define("WOOFIXOPT_SHOW_DISC", "woofix_show_disc");
+    define("WOOFIXOPT_DEFAULT_ROLE", "woofix_default_role");
+    define("WOOFIXOPT_AVAILABLE_ROLES", "woofix_available_roles");
 
 
     class WooFixedQuantity

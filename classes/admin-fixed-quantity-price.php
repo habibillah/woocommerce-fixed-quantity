@@ -51,9 +51,35 @@ if (!class_exists('WooAdminFixedQuantity')) {
                 'id'       => WOOFIXOPT_SHOW_DISC,
                 'default'  => WOOFIXCONF_SHOW_DISC,
                 'type'     => 'checkbox',
-                'desc'     => __('Show discount info in both cart and checkout page. See FAQ to customize discount info template.', 'woofix'),
+                'desc'     => __('Show discount info in both cart and checkout page. See <a target="_blank" href="https://wordpress.org/plugins/woocommerce-fixed-quantity/faq/">FAQ</a> to customize discount info template.', 'woofix'),
             );
 
+            $available_roles = array();
+            $all_roles = wp_roles()->roles;
+            foreach ($all_roles as $role_name => $role_info) {
+                $available_roles[$role_name] = $role_info['name'];
+            }
+            
+            $woofix_config[] = array(
+                'name'     => __('Default Role', 'woofix'),
+                'id'       => WOOFIXOPT_DEFAULT_ROLE,
+                'default'  => WOOFIXCONF_DEFAULT_ROLE,
+                'type'     => 'select',
+                'options'  => $available_roles,
+                'class'  => 'wc-enhanced-select',
+                'required' => true,
+                'desc'     => __('The role logged in with no data for item price will use default role data.', 'woofix'),
+            );
+
+            $woofix_config[] = array(
+                'name'     => __('Available Roles', 'woofix'),
+                'id'       => WOOFIXOPT_AVAILABLE_ROLES,
+                'type'     => 'multiselect',
+                'class'  => 'wc-enhanced-select',
+                'options'  => $available_roles,
+                'desc'     => __('Available Roles will be shown when you add/edit product. Default Role will be shown even not listed here.', 'woofix'),
+            );
+            
             $woofix_config[] = array(
                 'type' => 'sectionend',
                 'id' => 'woofixconf'
