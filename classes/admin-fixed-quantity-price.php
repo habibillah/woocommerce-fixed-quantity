@@ -113,7 +113,10 @@ if (!class_exists('WooAdminFixedQuantity')) {
 
         public function save_custom_fields($post_id)
         {
-            update_post_meta($post_id, '_woofix', htmlentities($_POST['_woofix']));
+            if (!empty($_POST['_woofix']))
+                update_post_meta($post_id, '_woofix', htmlentities($_POST['_woofix']));
+            else
+                delete_post_meta($post_id, '_woofix');
         }
         
         function filter_products($output)
