@@ -1,15 +1,9 @@
 <?php
 global $post;
 $custom_fields = get_post_custom($post->ID);
-$woofix_qty_desc = get_option(WOOFIXOPT_QTY_DESC);
-$woofix_default_role = get_option(WOOFIXOPT_DEFAULT_ROLE);
-$woofix_available_role = get_option(WOOFIXOPT_AVAILABLE_ROLES);
-if (empty($woofix_qty_desc))
-    $woofix_qty_desc = WOOFIXCONF_QTY_DESC;
-if (empty($woofix_default_role))
-    $woofix_default_role = WOOFIXCONF_DEFAULT_ROLE;
-if (empty($woofix_available_role))
-    $woofix_available_role = array();
+$woofix_qty_desc = get_option(WOOFIXOPT_QTY_DESC, WOOFIXCONF_QTY_DESC);
+$woofix_default_role = get_option(WOOFIXOPT_DEFAULT_ROLE, WOOFIXCONF_DEFAULT_ROLE);
+$woofix_available_role = get_option(WOOFIXOPT_AVAILABLE_ROLES, array());
 
 $all_roles = wp_roles()->roles;
 $woofix_roles = array(array(
