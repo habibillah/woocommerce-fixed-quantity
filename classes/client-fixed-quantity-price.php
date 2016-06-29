@@ -42,7 +42,7 @@ if (!class_exists('WooClientFixedQuantity')) {
         function get_availability($availability, $_product)
         {
             $id = WoofixUtility::getActualId($_product);
-            if (WoofixUtility::isFixedQtyPrice($id)) {
+            if (WoofixUtility::isFixedQtyPrice($id) !== false) {
                 $show_stock = get_option(WOOFIXOPT_SHOW_STOCK);
                 if ($show_stock == 'no') {
                     $availability['availability'] = '';
