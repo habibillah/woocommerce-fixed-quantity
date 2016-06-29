@@ -7,7 +7,7 @@
  * Author: Habibillah
  * Author URI: http://habibillah.kalicode.com/
  * Requires at least: 3.0.1
- * Tested up to: 4.3
+ * Tested up to: 4.5
  * Stable tag: 1.1.0
  * Text Domain: woofix
  * Domain Path: /languages/
@@ -23,7 +23,6 @@ if (!class_exists('WooFixedQuantity')) {
     define("WOOFIXCONF_QTY_DESC", "{qty} items @{price} {total}");
     define("WOOFIXCONF_SHOW_DISC", "yes");
     define("WOOFIXCONF_DEFAULT_ROLE", "customer");
-    define("WOOFIXCONF_AVAILABLE_ROLES", "");
 
     define("WOOFIXOPT_QTY_DESC", "woofix_qty_desc");
     define("WOOFIXOPT_SHOW_DISC", "woofix_show_disc");
@@ -65,11 +64,21 @@ if (!class_exists('WooFixedQuantity')) {
                 'num_decimals' => wc_get_price_decimals()
             );
 
-            wp_register_script('woofix_admin_js', plugins_url('/assets/js/admin-woofix.js', __FILE__), array('jquery'));
+            wp_register_script('woofix_lodash', plugins_url('/assets/js/lodash.min.js', __FILE__), array(), '1.8.3');
+            wp_register_script('woofix_serializer',
+                plugins_url('/assets/js/woofix-serializer.js', __FILE__),
+                array('jquery', 'woofix_lodash'),
+                '1.1.1');
+            wp_register_script('woofix_admin_js',
+                plugins_url('/assets/js/admin-woofix.js', __FILE__),
+                array('jquery', 'woofix_lodash', 'woofix_serializer'),
+                '1.1.1');
+
             wp_localize_script('woofix_admin_js', 'woofix_admin', $params);
 
+            wp_enqueue_script('woofix_lodash');
+            wp_enqueue_script('woofix_serializer');
             wp_enqueue_script('woofix_admin_js');
-            wp_enqueue_script('woofix_admin_serialize_json_js', plugins_url('/assets/js/jquery.serializejson.min.js', __FILE__), array('jquery'));
 
             wp_enqueue_style('woofix_admin_css', plugins_url('/assets/css/admin-woofix.css', __FILE__));
         }

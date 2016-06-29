@@ -7,25 +7,26 @@ jQuery(document).ready(function($) {
         woofixjs_admin = woofix_admin;
 
 
-    var woofixPriceTableSelector = '#woofix_price_table';
+    var woofix_product_data = '#woofix_product_data_table';
     var inputWoofixSelector = 'input[name="_woofix"]';
 
     var regenerateData = function() {
-        var data = $(woofixPriceTableSelector + ' :input').serializeJSON({
-            "customTypes": {
-                "woodecimal": function (value) {
-                    return window.accounting.unformat(value, woofixjs_admin.decimal_point);
-                }
-            }
-        });
+        // var data = $(woofix_product_data + ' :input').serializeJSON({
+        //     "customTypes": {
+        //         "woodecimal": function (value) {
+        //             return window.accounting.unformat(value, woofixjs_admin.decimal_point);
+        //         }
+        //     }
+        // });
+        var data = $(woofix_product_data + ' :input').serializeWofix(woofixjs_admin);
         $(inputWoofixSelector).val(JSON.stringify(data));
     };
 
-    var regenerateIndex = function() {
-        $(woofixPriceTableSelector).find('tbody tr').each(function(index) {
+    var regenerateIndex = function(role) {
+        $('.woofix_price_table_container[data-role-key="' + role + '"]').find('tbody tr').each(function(index) {
             $(this).find('[data-name]').each(function() {
                 var name = $(this).data('name');
-                var inputName = 'woofix[' + index + '][' + name + ']';
+                var inputName = 'woofix[' + role + '][' + index + '][' + name + ']';
                 if (name === "woofix_disc" || name === "woofix_price")
                     inputName += ":woodecimal";
 
@@ -76,28 +77,32 @@ jQuery(document).ready(function($) {
         var existingVal = $(inputWoofixSelector).val();
         if (existingVal != '') {
             existingVal = JSON.parse(existingVal);
-            $.each(existingVal['woofix'], function(key, value) {
-                var row = $('#woofix_template').find('tr').clone();
-                row.find('input[data-name="woofix_desc"]').val(value['woofix_desc']);
-                row.find('input[data-name="woofix_qty"]').val(value['woofix_qty']);
-                row.find('input[data-name="woofix_disc"]').val(formatNumberToSave(value['woofix_disc']));
-                row.find('input[data-name="woofix_price"]').val(formatNumberToSave(value['woofix_price']));
-                row.appendTo('#woofix_price_table tbody');
+            $.each(existingVal['woofix'], function(roleKey, data) {
+                var tableContainer = $('.woofix_price_table_container[data-role-key="' + roleKey + '"]');
+                var table = tableContainer.find('.woofix_price_table tbody');
+                $.each(data, function (index, value) {
+                    var row = $('#woofix_template').find('tr').clone();
+                    row.find('input[data-name="woofix_desc"]').val(value['woofix_desc']);
+                    row.find('input[data-name="woofix_qty"]').val(value['woofix_qty']);
+                    row.find('input[data-name="woofix_disc"]').val(formatNumberToSave(value['woofix_disc']));
+                    row.find('input[data-name="woofix_price"]').val(formatNumberToSave(value['woofix_price']));
+                    row.appendTo(table);
+                });
+                regenerateIndex(roleKey);
             });
-
-            regenerateIndex();
         }
     }
 
-    $('#woofix_add_price').on('click', function() {
+    $('.woofix_add_price').on('click', function() {
         var regularPrice = $('#_regular_price').val();
         if (regularPrice == '' || regularPrice <= 0) {
             alert ('Please add regular price.');
             return false;
         }
-        $('#woofix_template').find('tr').clone().appendTo('#woofix_price_table tbody');
+        var tableContainer = $(this).closest('.woofix_price_table_container');
+        $('#woofix_template').find('tr').clone().appendTo(tableContainer.find('.woofix_price_table tbody'));
 
-        regenerateIndex();
+        regenerateIndex(tableContainer.data('role-key'));
     });
     
     $('#_regular_price').on('change', function() {
@@ -116,19 +121,20 @@ jQuery(document).ready(function($) {
 
                 $(this).val(formatNumberToSave(regularPrice - ((discount/100) * regularPrice)));
 
-                regenerateData();                
+                regenerateData();
             });
         }
     });
 
-    $(woofixPriceTableSelector).on('click', '.woofix_delete', function() {
+    $(woofix_product_data).on('click', '.woofix_delete', function() {
+        var roleKey = $(this).closest('.woofix_price_table_container').data('role-key');
         $(this).closest('tr').remove();
 
-        regenerateIndex();
+        regenerateIndex(roleKey);
         regenerateData();
     });
 
-    $(woofixPriceTableSelector).on('change', 'input[name*="woofix_qty"]', function() {
+    $(woofix_product_data).on('change', 'input[name*="woofix_qty"]', function() {
         var newVal = $(this).val();
         if (newVal == "" || isNaN(newVal) || parseInt(newVal) <= 0) {
             newVal = 1;
@@ -139,11 +145,11 @@ jQuery(document).ready(function($) {
         regenerateData();
     });
 
-    $(woofixPriceTableSelector).on('change', 'input[name*="woofix_desc"]', function() {
+    $(woofix_product_data).on('change', 'input[name*="woofix_desc"]', function() {
         regenerateData();
     });
 
-    $(woofixPriceTableSelector).on('change', 'input[name*="woofix_disc"]', function() {
+    $(woofix_product_data).on('change', 'input[name*="woofix_disc"]', function() {
         validateMonetary(this);
 
         var newVal = window.accounting.unformat($(this).val(), woofixjs_admin.decimal_point);
@@ -162,7 +168,7 @@ jQuery(document).ready(function($) {
     });
 
 
-    $(woofixPriceTableSelector).on('change', 'input[name*="woofix_price"]', function() {
+    $(woofix_product_data).on('change', 'input[name*="woofix_price"]', function() {
 
         var regularPriceValue = $('#_regular_price').val();
         var regularPrice = window.accounting.unformat(regularPriceValue, woofixjs_admin.decimal_point);
@@ -181,4 +187,7 @@ jQuery(document).ready(function($) {
         regenerateData();
     });
 
+    $('.woofix_price_table_container h2').click(function () {
+        $(this).closest('.woofix_price_table_container').find('.button-link').click();
+    });
 });

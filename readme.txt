@@ -64,11 +64,12 @@ Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 
 == Screenshots ==
 
-1. admin screen
-2. quantity on product 1
-3. quantity on product 2
-4. quantity on cart
-5. quantity on checkout
+1. admin global settings
+2. admin product screen
+3. quantity on product 1
+4. quantity on product 2
+5. quantity on cart
+6. quantity on checkout
 
 == Changelog ==
 

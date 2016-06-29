@@ -2,30 +2,73 @@
 global $post;
 $custom_fields = get_post_custom($post->ID);
 $woofix_qty_desc = get_option(WOOFIXOPT_QTY_DESC);
+$woofix_default_role = get_option(WOOFIXOPT_DEFAULT_ROLE);
+$woofix_available_role = get_option(WOOFIXOPT_AVAILABLE_ROLES);
 if (empty($woofix_qty_desc))
     $woofix_qty_desc = WOOFIXCONF_QTY_DESC;
+if (empty($woofix_default_role))
+    $woofix_default_role = WOOFIXCONF_DEFAULT_ROLE;
+if (empty($woofix_available_role))
+    $woofix_available_role = array();
+
+$all_roles = wp_roles()->roles;
+$woofix_roles = array(array(
+    'key' => $woofix_default_role,
+    'name' => $all_roles[$woofix_default_role]['name']
+));
+
+foreach ($woofix_available_role as $role_key) {
+    if ($woofix_default_role == $role_key)
+        continue;
+    $woofix_roles[] = array(
+        'key' => $role_key,
+        'name' => $all_roles[$role_key]['name']
+    );
+}
 ?>
 
 <div id="woofix_product_data" class="panel woocommerce_options_panel wc-metaboxes-wrapper">
 	<div class="options_group">
         <input type="hidden" name="_woofix" value="<?php echo !empty($custom_fields["_woofix"][0])? $custom_fields["_woofix"][0] : ''; ?>" />
-        <p><a id="woofix_add_price" class="button button-primary"><?php _e('Add Price', 'woofix'); ?></a></p>
+
         <p><em>
             <strong><?php _e('Note:'); ?></strong> 
             <?php _e('To use custom description, please use this template:'); ?> <quote>{qty} items @{price} {total}</quote>
         </em></p>
-        <table id="woofix_price_table">
-            <thead>
-            <tr>
-                <th class="woofix_desc"><?php _e('Description', 'woofix'); ?></th>
-                <th class="woofix_qty"><?php _e('Qty', 'woofix'); ?></th>
-                <th class="woofix_disc"><?php _e('Disc (%)', 'woofix'); ?></th>
-                <th class="woofix_price"><?php _e('Price Per Qty', 'woofix'); ?></th>
-                <th><?php _e('Action', 'woofix'); ?></th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+
+        <div id="woofix_product_data_table">
+            <?php foreach ($woofix_roles as $role): ?>
+                <div class="postbox woofix_price_table_container <?php echo ($role['key'] == $woofix_default_role)? "" : "closed"; ?>"
+                     data-role-key="<?php echo $role['key']; ?>">
+
+                    <button type="button" class="handlediv button-link"
+                            aria-expanded="<?php echo ($role['key'] == $woofix_default_role)? "true" : "false"; ?>">
+                        <span class="screen-reader-text"><?php echo __("Toggle panel:", 'woofix') . ' ' . $role['name']; ?></span>
+                        <span class="toggle-indicator" aria-hidden="true"></span>
+                    </button>
+                    <h2><span><?php echo $role['name'] . ' ' . __("Role", 'woofix'); ?></span></h2>
+                    <div class="inside">
+                        <p><a class="button button-primary woofix_add_price">
+                                <?php _e('Add Price', 'woofix'); ?>
+                            </a></p>
+
+                        <table class="table woofix_price_table">
+                            <thead>
+                            <tr>
+                                <th class="woofix_desc"><?php _e('Description', 'woofix'); ?></th>
+                                <th class="woofix_qty"><?php _e('Qty', 'woofix'); ?></th>
+                                <th class="woofix_disc"><?php _e('Disc (%)', 'woofix'); ?></th>
+                                <th class="woofix_price"><?php _e('Price Per Qty', 'woofix'); ?></th>
+                                <th><?php _e('Action', 'woofix'); ?></th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <br>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
 
     <table id="woofix_template" class="woofix hidden">

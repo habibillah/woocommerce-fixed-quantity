@@ -3,12 +3,17 @@
 }
 
 #woofix_product_data table {
-    width: 100%;
+    width: 98%;
     text-align: left;
+    margin: 0 1%;
 }
 
 #woofix_product_data table th {
     white-space: nowrap;
+    border-bottom: 1px solid #e1e1e1;
+    padding-left: 4px;
+    padding-bottom: 7px;
+    margin: 0;
 }
 
 #woofix_product_data table input {
@@ -30,4 +35,10 @@
 #woofix_product_data input.woofix_input_qty,
 #woofix_product_data input.woofix_input_price {
     text-align: right;
+}
+
+.woofix_price_table_container h2 {
+
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
 }
