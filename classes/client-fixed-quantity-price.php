@@ -25,6 +25,7 @@ if (!class_exists('WooClientFixedQuantity')) {
             add_filter('woocommerce_add_to_cart_validation', array(&$this, 'validate_quantity'), 10, 3);
             add_filter('woocommerce_update_cart_validation', array(&$this, 'validate_quantity_update'), 10, 4);
             add_filter('woocommerce_cart_item_quantity', array(&$this, 'filter_woocommerce_cart_item_quantity'), 10, 2);
+            add_filter('woocommerce_get_availability', array(&$this, 'get_availability'), 1, 2);
 
             add_action('woocommerce_before_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
             add_action('woocommerce_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
@@ -36,6 +37,19 @@ if (!class_exists('WooClientFixedQuantity')) {
             } else {
                 add_filter('woocommerce_cart_item_price_html', array(&$this, 'filter_item_price'), 20, 3);
             }
+        }
+
+        function get_availability($availability, $_product)
+        {
+            $id = WoofixUtility::getActualId($_product);
+            if (WoofixUtility::isFixedQtyPrice($id)) {
+                $show_stock = get_option(WOOFIXOPT_SHOW_STOCK);
+                if ($show_stock == 'no') {
+                    $availability['availability'] = '';
+                }
+            }
+
+            return $availability;
         }
 
         public function filter_woocommerce_cart_item_quantity($input_html, $cart_item_key)
@@ -57,8 +71,8 @@ if (!class_exists('WooClientFixedQuantity')) {
                     /** @noinspection PhpUnusedLocalVariableInspection */
                     $selected_quantity = $cart_item['quantity'];
 
-                    $template = $this->woofix_locate_template( 'global/quantity-input.php' );
-                    if ( $template !== false ) {
+                    $template = $this->woofix_locate_template('global/quantity-input.php', false);
+                    if ($template !== false) {
                         ob_start();
                         /** @noinspection PhpIncludeInspection */
                         include($template);
@@ -267,8 +281,8 @@ if (!class_exists('WooClientFixedQuantity')) {
                         }
                     }
 
-                    $template = $this->woofix_locate_template( 'discount-info.php' );
-                    if ( $template !== false ) {
+                    $template = $this->woofix_locate_template('discount-info.php', false);
+                    if ($template !== false) {
                         ob_start();
                         /** @noinspection PhpIncludeInspection */
                         include($template);
@@ -306,8 +320,8 @@ if (!class_exists('WooClientFixedQuantity')) {
                         }
                     }
 
-                    $template = $this->woofix_locate_template( 'discount-info.php' );
-                    if ( $template !== false ) {
+                    $template = $this->woofix_locate_template('discount-info.php', false);
+                    if ($template !== false) {
                         ob_start();
                         /** @noinspection PhpIncludeInspection */
                         include($template);
@@ -333,12 +347,7 @@ if (!class_exists('WooClientFixedQuantity')) {
 
                 $postId = get_the_ID();
                 if (WoofixUtility::isFixedQtyPrice($postId) !== false) {
-                    $theme_plugin_template = 'woocommerce-fixed-quantity/' . $template_name;
-                    $template = locate_template(array($theme_plugin_template));
-
-                    $plugin_template = plugin_dir_path($this->file) . 'templates/' . $template_name;
-                    if (!$template && file_exists($plugin_template))
-                        $template = $plugin_template;
+                    $template = $this->woofix_locate_template($template_name, true);
                 }
             }
 
@@ -358,11 +367,19 @@ if (!class_exists('WooClientFixedQuantity')) {
             return $template;
         }
 
-        function woofix_locate_template($template_name)
+        function woofix_locate_template($template_name, $require_once)
         {
+            $available_templates = array(
+                'discount-info.php',
+                'global/quantity-input.php'
+            );
+            
+            if (!in_array($template_name, $available_templates))
+                return false;
+            
             // search template in theme
             $theme_plugin_template = 'woocommerce-fixed-quantity/' . $template_name;
-            $template = locate_template($theme_plugin_template, false);
+            $template = locate_template($theme_plugin_template, $require_once);
             
             if (!$template) {
                 // get default template

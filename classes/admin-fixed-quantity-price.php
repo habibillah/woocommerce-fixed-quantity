@@ -54,6 +54,14 @@ if (!class_exists('WooAdminFixedQuantity')) {
                 'desc'     => __('Show discount info in both cart and checkout page. See <a target="_blank" href="https://wordpress.org/plugins/woocommerce-fixed-quantity/faq/">FAQ</a> to customize discount info template.', 'woofix'),
             );
 
+            $woofix_config[] = array(
+                'name'     => __('Show stock availability', 'woofix'),
+                'id'       => WOOFIXOPT_SHOW_STOCK,
+                'default'  => WOOFIXCONF_SHOW_STOCK,
+                'type'     => 'checkbox',
+                'desc'     => __('Show stock availability in product page.', 'woofix'),
+            );
+
             $available_roles = array();
             $all_roles = wp_roles()->roles;
             foreach ($all_roles as $role_name => $role_info) {
