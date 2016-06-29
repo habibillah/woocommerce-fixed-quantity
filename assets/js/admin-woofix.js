@@ -11,13 +11,6 @@ jQuery(document).ready(function($) {
     var inputWoofixSelector = 'input[name="_woofix"]';
 
     var regenerateData = function() {
-        // var data = $(woofix_product_data + ' :input').serializeJSON({
-        //     "customTypes": {
-        //         "woodecimal": function (value) {
-        //             return window.accounting.unformat(value, woofixjs_admin.decimal_point);
-        //         }
-        //     }
-        // });
         var data = $(woofix_product_data + ' :input').serializeWofix(woofixjs_admin);
         $(inputWoofixSelector).val(JSON.stringify(data));
     };
@@ -78,6 +71,16 @@ jQuery(document).ready(function($) {
         if (existingVal != '') {
             existingVal = JSON.parse(existingVal);
             $.each(existingVal['woofix'], function(roleKey, data) {
+
+                var needRegenerate = false;
+                if (!isNaN(roleKey)) {
+                    needRegenerate = true;
+                    roleKey = $('.woofix_price_table_container:first-child').data('role-key');
+                    var newdata = {};
+                    newdata[roleKey] = data;
+                    data = newdata;
+                }
+
                 var tableContainer = $('.woofix_price_table_container[data-role-key="' + roleKey + '"]');
                 var table = tableContainer.find('.woofix_price_table tbody');
                 $.each(data, function (index, value) {
@@ -89,6 +92,9 @@ jQuery(document).ready(function($) {
                     row.appendTo(table);
                 });
                 regenerateIndex(roleKey);
+
+                if (needRegenerate)
+                    regenerateData();
             });
         }
     }
