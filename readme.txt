@@ -66,10 +66,11 @@ Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 
 1. admin global settings
 2. admin product screen
-3. quantity on product 1
-4. quantity on product 2
-5. quantity on cart
-6. quantity on checkout
+3. admin product filter
+4. quantity on product 1
+5. quantity on product 2
+6. quantity on cart
+7. quantity on checkout
 
 == Changelog ==
 
