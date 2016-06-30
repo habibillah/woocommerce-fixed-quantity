@@ -31,11 +31,37 @@ if (!class_exists('WooClientFixedQuantity')) {
             add_action('woocommerce_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
             add_action('woocommerce_after_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
             add_action('woocommerce_cart_loaded_from_session', array(&$this, 'action_before_calculate_totals'), 10, 1);
+            add_action('template_redirect', array(&$this, 'action_before_rendering_templates'));
 
             if (version_compare(WOOCOMMERCE_VERSION, "2.1.0") >= 0) {
                 add_filter('woocommerce_cart_item_price', array(&$this, 'filter_item_price'), 20, 3);
             } else {
                 add_filter('woocommerce_cart_item_price_html', array(&$this, 'filter_item_price'), 20, 3);
+            }
+        }
+
+        function action_before_rendering_templates()
+        {
+            if(is_cart() || is_checkout()) {
+
+                foreach(WC()->cart->cart_contents as $prod_in_cart) {
+                    $prod_id = WoofixUtility::getActualId($prod_in_cart);
+                    $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id);
+                    if ($fixedPriceData !== false) {
+
+                        $remove_product = true;
+                        foreach ($fixedPriceData['woofix'] as $item) {
+                            if ($prod_in_cart['quantity'] == $item['woofix_qty'])
+                                $remove_product = false;
+                        }
+
+                        if($remove_product) {
+                            $prod_unique_id = WC()->cart->generate_cart_id($prod_id);
+                            unset( WC()->cart->cart_contents[$prod_unique_id]);
+                        }
+                    }
+                }
+
             }
         }
 
@@ -181,6 +207,7 @@ if (!class_exists('WooClientFixedQuantity')) {
                 $productId = WoofixUtility::getActualId($_product);
                 $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
                 if ($fixedPriceData !== false) {
+                                        
                     foreach ($fixedPriceData['woofix'] as $data) {
                         if ($data['woofix_qty'] == $cart_item['quantity']) {
                             $cart_item['data']->set_price(floatval($data['woofix_price']));
