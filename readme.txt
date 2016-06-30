@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
 Tested up to: 4.5
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,7 @@ Right now this plugins has limitations that not check **Stock Qty**. So when sto
 
 1. woofix_quantity_is_not_valid
 2. woofix_product_add_to_cart_text
+3. woofix_sort_qty_data_to_show
 
 = Available Actions Hook =
 
@@ -106,6 +107,11 @@ Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 
 = 1.1.0 =
 * Simpilfy quantity input template
+
+= 1.1.1 =
+* Add show/hide stock availability
+* Support for multiple user role
+* Add `woofix_sort_qty_data_to_show` filter
 
 == Upgrade Notice ==
 
