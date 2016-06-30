@@ -23,11 +23,13 @@ if (!class_exists('WooFixedQuantity')) {
     define("WOOFIXCONF_QTY_DESC", "{qty} items @{price} {total}");
     define("WOOFIXCONF_SHOW_DISC", "yes");
     define("WOOFIXCONF_SHOW_STOCK", "yes");
+    define("WOOFIXCONF_CHECK_STOCK", "no");
     define("WOOFIXCONF_DEFAULT_ROLE", "customer");
 
     define("WOOFIXOPT_QTY_DESC", "woofix_qty_desc");
     define("WOOFIXOPT_SHOW_DISC", "woofix_show_disc");
     define("WOOFIXOPT_SHOW_STOCK", "woofix_show_stock");
+    define("WOOFIXOPT_CHECK_STOCK", "woofix_check_stock");
     define("WOOFIXOPT_DEFAULT_ROLE", "woofix_default_role");
     define("WOOFIXOPT_AVAILABLE_ROLES", "woofix_available_roles");
 

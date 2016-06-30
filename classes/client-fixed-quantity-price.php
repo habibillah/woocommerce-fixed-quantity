@@ -219,6 +219,12 @@ if (!class_exists('WooClientFixedQuantity')) {
 
         public function validate_quantity($passed, $product_id, $quantity)
         {
+            // TODO complete check stock. Also check when checkout
+//            $check_stock = get_option(WOOFIXOPT_CHECK_STOCK, WOOFIXCONF_CHECK_STOCK);
+//            if ($check_stock == 'yes') {
+//
+//            }
+
             $fixedPriceData = WoofixUtility::isFixedQtyPrice($product_id);
             if ($fixedPriceData !== false) {
                 $qtyInCart = 0;
@@ -257,6 +263,12 @@ if (!class_exists('WooClientFixedQuantity')) {
 
         public function validate_quantity_update($passed, $cart_item_key, $cart_item, $quantity)
         {
+            // TODO complete check stock. Also check when checkout
+//            $check_stock = get_option(WOOFIXOPT_CHECK_STOCK, WOOFIXCONF_CHECK_STOCK);
+//            if ($check_stock == 'yes') {
+//
+//            }
+
             $product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
             $productId = WoofixUtility::getActualId($product);
             $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);

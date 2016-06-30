@@ -59,7 +59,15 @@ if (!class_exists('WooAdminFixedQuantity')) {
                 'id'       => WOOFIXOPT_SHOW_STOCK,
                 'default'  => WOOFIXCONF_SHOW_STOCK,
                 'type'     => 'checkbox',
-                'desc'     => __('Show stock availability in product page.', 'woofix'),
+                'desc'     => __('Show stock availability info in product page.', 'woofix'),
+            );
+
+            $woofix_config[] = array(
+                'name'     => __('Check stock', 'woofix'),
+                'id'       => WOOFIXOPT_CHECK_STOCK,
+                'default'  => WOOFIXCONF_CHECK_STOCK,
+                'type'     => 'checkbox',
+                'desc'     => __('Check stock availability before purchase/check out.', 'woofix'),
             );
 
             $available_roles = array();
