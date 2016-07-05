@@ -4,7 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
 Tested up to: 4.5
-Stable tag: 1.1.1
+Version: 1.1.2
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +113,9 @@ Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 * Add show/hide stock availability
 * Support for multiple user role
 * Add `woofix_sort_qty_data_to_show` filter
+
+= 1.1.2 =
+* Fixing conflict with underscore
 
 == Upgrade Notice ==
 

@@ -3,12 +3,12 @@
  * Plugin Name: WooCommerce Fixed Quantity
  * Plugin URI: http://habibillah.github.io/woocommerce-fixed-quantity/
  * Description: Customize price based on fixed quantity.
- * Version: 1.1.1
  * Author: Habibillah
  * Author URI: http://habibillah.kalicode.com/
- * Requires at least: 3.0.1
+ * Version: 1.1.2
+ * Stable tag: 1.1.2
  * Tested up to: 4.5
- * Stable tag: 1.1.1
+ * Requires at least: 3.0.1
  * Text Domain: woofix
  * Domain Path: /languages/
  */
@@ -68,19 +68,22 @@ if (!class_exists('WooFixedQuantity')) {
                 'num_decimals' => wc_get_price_decimals()
             );
 
-            wp_register_script('woofix_lodash', plugins_url('/assets/js/lodash.min.js', __FILE__), array(), '1.8.3');
+            if (!wp_script_is('underscore', 'registered')) {
+                wp_register_script('underscore', plugins_url('/assets/js/lodash.min.js', __FILE__), array(), '1.8.3');
+            }
+
             wp_register_script('woofix_serializer',
                 plugins_url('/assets/js/woofix-serializer.js', __FILE__),
-                array('jquery', 'woofix_lodash'),
+                array('jquery', 'underscore'),
                 '1.1.1');
             wp_register_script('woofix_admin_js',
                 plugins_url('/assets/js/admin-woofix.js', __FILE__),
-                array('jquery', 'woofix_lodash', 'woofix_serializer'),
+                array('jquery', 'underscore', 'woofix_serializer'),
                 '1.1.1');
 
             wp_localize_script('woofix_admin_js', 'woofix_admin', $params);
 
-            wp_enqueue_script('woofix_lodash');
+            wp_enqueue_script('underscore');
             wp_enqueue_script('woofix_serializer');
             wp_enqueue_script('woofix_admin_js');
 
