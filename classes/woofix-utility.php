@@ -84,14 +84,20 @@ if (!class_exists('WooAdminFixedQuantity')) {
                     if (!in_array($key, $current_user_roles))
                         continue;
 
-                    foreach ($value as $qty_data) {
-                        if (empty($qty_data['woofix_qty']))
-                            continue;
+                    foreach($value as  $variation => $data) {
+                        foreach ($data as $qty_data) {
+                            if (empty($qty_data['woofix_qty']))
+                                continue;
 
-                        if (empty($qty_data['woofix_disc']) && empty($qty_data['woofix_price']))
-                            continue;
+                            if (empty($qty_data['woofix_disc']) && empty($qty_data['woofix_price']))
+                                continue;
 
-                        $returnValue[] = $qty_data;
+                            if($variation) {
+                                $qty_data['variation'] = str_replace('variation_', '', $variation);
+                            }
+
+                            $returnValue[] = $qty_data;
+                        }
                     }
                 }
             }

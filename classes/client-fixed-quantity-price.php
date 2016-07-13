@@ -207,7 +207,7 @@ if (!class_exists('WooClientFixedQuantity')) {
                 $productId = WoofixUtility::getActualId($_product);
                 $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
                 if ($fixedPriceData !== false) {
-                                        
+
                     foreach ($fixedPriceData['woofix'] as $data) {
                         if ($data['woofix_qty'] == $cart_item['quantity']) {
                             $cart_item['data']->set_price(floatval($data['woofix_price']));
@@ -412,14 +412,14 @@ if (!class_exists('WooClientFixedQuantity')) {
                 'discount-info.php',
                 'global/quantity-input.php'
             );
-            
+
             if (!in_array($template_name, $available_templates))
                 return false;
-            
+
             // search template in theme
             $theme_plugin_template = 'woocommerce-fixed-quantity/' . $template_name;
             $template = locate_template($theme_plugin_template, $require_once);
-            
+
             if (!$template) {
                 // get default template
                 $plugin_template = plugin_dir_path($this->file) . 'templates/' . $template_name;
@@ -430,7 +430,7 @@ if (!class_exists('WooClientFixedQuantity')) {
 
                 $template = $plugin_template;
             }
-            
+
             return $template;
         }
     }

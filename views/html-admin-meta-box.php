@@ -1,5 +1,5 @@
 <?php
-global $post;
+global $post, $product;
 $custom_fields = get_post_custom($post->ID);
 $woofix_qty_desc = get_option(WOOFIXOPT_QTY_DESC, WOOFIXCONF_QTY_DESC);
 $woofix_default_role = get_option(WOOFIXOPT_DEFAULT_ROLE, WOOFIXCONF_DEFAULT_ROLE);
@@ -26,7 +26,7 @@ foreach ($woofix_available_role as $role_key) {
         <input type="hidden" name="_woofix" value="<?php echo !empty($custom_fields["_woofix"][0])? $custom_fields["_woofix"][0] : ''; ?>" />
 
         <p><em>
-            <strong><?php _e('Note:'); ?></strong> 
+            <strong><?php _e('Note:'); ?></strong>
             <?php _e('To use custom description, please use this template:'); ?> <quote>{qty} items @{price} {total}</quote>
         </em></p>
 
@@ -42,6 +42,15 @@ foreach ($woofix_available_role as $role_key) {
                     </button>
                     <h2><span><?php echo $role['name'] . ' ' . __("Role", 'woofix'); ?></span></h2>
                     <div class="inside">
+
+                        <p>
+                        <select id="variations-fixed-price">
+                        </select>
+                        <a class="button button-primary woofix_refresh_variation">
+                                <?php _e('Refresh', 'woofix'); ?>
+                            </a>
+                        <p>
+
                         <p><a class="button button-primary woofix_add_price">
                                 <?php _e('Add Price', 'woofix'); ?>
                             </a></p>
