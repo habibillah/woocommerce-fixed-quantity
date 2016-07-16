@@ -9,7 +9,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
          * @param $postId
          * @return array|bool|mixed
          */
-        public static function isFixedQtyPrice($postId)
+        public static function isFixedQtyPrice($postId, $variationId = null)
         {
             $current_user = wp_get_current_user();
             $current_user_roles = $current_user->roles;
@@ -35,6 +35,13 @@ if (!class_exists('WooAdminFixedQuantity')) {
 
                 return ($a['woofix_qty'] < $b['woofix_qty']) ? -1 : 1;
             });
+
+            if($variationId) {
+                $woofixData = array_filter($woofixData, function($qtyData) use($variationId){
+                    return isset($qtyData['woofix_variation']) && $variationId == $qtyData['woofix_variation'];
+                });
+            }
+
             $woofixData = apply_filters('woofix_sort_qty_data_to_show', $woofixData);
             return array('woofix' => $woofixData);
         }
@@ -43,19 +50,29 @@ if (!class_exists('WooAdminFixedQuantity')) {
          * @param $product
          * @return int
          */
-        public static function getActualId($product)
+        public static function getActualProductId($product)
+        {
+            if (is_object($product)) {
+                return $product->id;
+            }
+            if (!empty($product['product_id'])) {
+                return $product['product_id'];
+            }
+
+            return null;
+        }
+
+        /**
+         * @param $product
+         * @return int
+         */
+        public static function getActualVariationId($product)
         {
             if ($product instanceof WC_Product_Variation) {
                 return $product->variation_id;
             }
-            if (is_object($product)) {
-                return $product->id;
-            }
-            if (!empty($product['variation_id'])) {
+            if (array_key_exists('variation_id', $product)) {
                 return $product['variation_id'];
-            }
-            if (!empty($product['product_id'])) {
-                return $product['product_id'];
             }
 
             return null;
@@ -84,20 +101,18 @@ if (!class_exists('WooAdminFixedQuantity')) {
                     if (!in_array($key, $current_user_roles))
                         continue;
 
-                    foreach($value as  $variation => $data) {
-                        foreach ($data as $qty_data) {
-                            if (empty($qty_data['woofix_qty']))
-                                continue;
+                    foreach($value as $qty_data) {
+                        if (empty($qty_data['woofix_qty']))
+                            continue;
 
-                            if (empty($qty_data['woofix_disc']) && empty($qty_data['woofix_price']))
-                                continue;
+                        if (empty($qty_data['woofix_disc']) && empty($qty_data['woofix_price']))
+                            continue;
 
-                            if($variation) {
-                                $qty_data['variation'] = str_replace('variation_', '', $variation);
-                            }
-
-                            $returnValue[] = $qty_data;
+                        if(!isset($qty_data['woofix_variation']) || !$qty_data['woofix_variation']) {
+                            $qty_data['woofix_variation'] = null;
                         }
+
+                        $returnValue[] = $qty_data;
                     }
                 }
             }

@@ -12,7 +12,6 @@ jQuery(document).ready(function($) {
 
     var regenerateData = function() {
         var data = $(woofix_product_data + ' :input').serializeWofix(woofixjs_admin);
-        console.log(data);
         $(inputWoofixSelector).val(JSON.stringify(data));
     };
 
@@ -33,17 +32,13 @@ jQuery(document).ready(function($) {
     }
 
     var regenerateIndex = function(role) {
-        var variation_index = {};
-        $('.woofix_price_table_container[data-role-key="' + role + '"]').find('tbody tr').each(function() {
-
-            var variation = $(this).data('variation');
-            if(variation_index[variation] === undefined) variation_index[variation] = 0
-            else variation_index[variation]++;
-            var index = variation_index[variation];
+        $('.woofix_price_table_container[data-role-key="' + role + '"]')
+            .find('tbody tr')
+            .each(function(index) {
 
             $(this).find('[data-name]').each(function() {
                 var name = $(this).data('name');
-                var inputName = 'woofix[' + role + '][variation_'+ variation +'][' + index + '][' + name + ']';
+                var inputName = 'woofix[' + role + '][' + index + '][' + name + ']';
                 if (name === "woofix_disc" || name === "woofix_price")
                     inputName += ":woodecimal";
 
@@ -60,15 +55,15 @@ jQuery(document).ready(function($) {
         var productType = get_product_type();
         if (productType == 'simple') {
             $('.woofix_options').show();
-            $('#variations-fixed-price').hide();
+            $('.woofix-variation-zone').hide();
             feed_table();
         } else if(productType == 'variable') {
             $('.woofix_options').show();
-            $('#variations-fixed-price').show();
+            $('.woofix-variation-zone').show();
             var options = $('.woocommerce_variation').map(function(i, e) {
                 var variation_id = $(this).find('.remove_variation').attr('rel');
                 var attributes = $(this).find('h3 select').map(function() {
-                    return $(this).val()
+                    return $(this).find('option:selected').text();
                 });
                 var variation_name = attributes.toArray().join(' | ');
                 return '<option value='+variation_id+'>'+variation_name+'</option>';
@@ -139,20 +134,19 @@ jQuery(document).ready(function($) {
                     var tableContainer = $('.woofix_price_table_container[data-role-key="' + roleKey + '"]');
                     var table = tableContainer.find('.woofix_price_table tbody');
                     table.find('tr').remove();
-                    
-                    $.each(data, function(variation, data) {
-                        var variation_id = parseInt((''+variation).split('_')[1]);
-                        $.each(data, function (index, value) {
-                            if(!value) return
-                            var row = $('#woofix_template').find('tr').clone();
-                            row.find('input[data-name="woofix_desc"]').val(value['woofix_desc']);
-                            row.find('input[data-name="woofix_qty"]').val(value['woofix_qty']);
-                            row.find('input[data-name="woofix_disc"]').val(formatNumberToSave(value['woofix_disc']));
-                            row.find('input[data-name="woofix_price"]').val(formatNumberToSave(value['woofix_price']));
-                            row.addClass('variation_'+variation_id);
-                            row.data('variation', variation_id);
-                            row.appendTo(table);
-                        });
+
+                    $.each(data, function (index, value) {
+                        if(!value) return
+                        var row = $('#woofix_template').find('tr').clone();
+                        row.find('input[data-name="woofix_desc"]').val(value['woofix_desc']);
+                        row.find('input[data-name="woofix_qty"]').val(value['woofix_qty']);
+                        row.find('input[data-name="woofix_disc"]').val(formatNumberToSave(value['woofix_disc']));
+                        row.find('input[data-name="woofix_price"]').val(formatNumberToSave(value['woofix_price']));
+                        row.find('input[data-name="woofix_variation"]').val(value['woofix_variation'])
+                        if(value['woofix_variation']) {
+                            row.addClass('variation_'+value['woofix_variation']);
+                        }
+                        row.appendTo(table);
                     });
 
                     regenerateIndex(roleKey);
@@ -175,6 +169,9 @@ jQuery(document).ready(function($) {
         row.addClass('variation_'+get_selected_variation());
         row.data('variation', get_selected_variation());
         row.appendTo(tableContainer.find('.woofix_price_table tbody'));
+        if(get_selected_variation()) {
+            row.find('.woofix_input_variation').val(get_selected_variation());
+        }
         regenerateIndex(tableContainer.data('role-key'));
     });
 

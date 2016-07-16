@@ -43,11 +43,11 @@ foreach ($woofix_available_role as $role_key) {
                     <h2><span><?php echo $role['name'] . ' ' . __("Role", 'woofix'); ?></span></h2>
                     <div class="inside">
 
-                        <p>
-                        <select id="variations-fixed-price">
-                        </select>
-                        <a class="button button-primary woofix_refresh_variation">
-                                <?php _e('Refresh', 'woofix'); ?>
+                        <p class="woofix-variation-zone">
+                            <select id="variations-fixed-price">
+                            </select>
+                            <a class="button button-primary woofix_refresh_variation">
+                                    <?php _e('Refresh', 'woofix'); ?>
                             </a>
                         <p>
 
@@ -76,7 +76,10 @@ foreach ($woofix_available_role as $role_key) {
 
     <table id="woofix_template" class="woofix hidden">
         <tr>
-            <td><input placeholder="" type="text" class="woofix_input_desc" data-name="woofix_desc" value="<?php echo $woofix_qty_desc; ?>" /></td>
+            <td>
+                <input type="hidden" data-name="woofix_variation"  class="woofix_input_variation" />
+                <input placeholder="" type="text" class="woofix_input_desc" data-name="woofix_desc" value="<?php echo $woofix_qty_desc; ?>" />
+            </td>
             <td><input placeholder="" type="text" class="woofix_input_qty" data-name="woofix_qty" /></td>
             <td><input placeholder="" type="text" class="woofix_input_disc" data-name="woofix_disc" /></td>
             <td><input placeholder="" type="text" class="woofix_input_price" data-name="woofix_price" /></td>

@@ -10,8 +10,6 @@ jQuery(document).ready(function($) {
                 .attr('disabled', false)
                 .show();
         }
-        console.log(variation)
-
     }
 
     $('body').on('change', '.variation_id', filterAvalaibleQty);

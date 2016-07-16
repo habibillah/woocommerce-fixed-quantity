@@ -45,10 +45,10 @@ if (!class_exists('WooClientFixedQuantity')) {
             if(is_cart() || is_checkout()) {
 
                 foreach(WC()->cart->cart_contents as $prod_in_cart) {
-                    $prod_id = WoofixUtility::getActualId($prod_in_cart);
-                    $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id);
+                    $prod_id = WoofixUtility::getActualProductId($prod_in_cart);
+                    $actual_id = WoofixUtility::getActualVariationId($prod_in_cart);
+                    $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
                     if ($fixedPriceData !== false) {
-
                         $remove_product = true;
                         foreach ($fixedPriceData['woofix'] as $item) {
                             if ($prod_in_cart['quantity'] == $item['woofix_qty'])
@@ -67,7 +67,9 @@ if (!class_exists('WooClientFixedQuantity')) {
 
         function get_availability($availability, $_product)
         {
-            $id = WoofixUtility::getActualId($_product);
+            $prod_id = WoofixUtility::getActualProductId($_product);
+            $actual_id = WoofixUtility::getActualVariationId($_product);
+            $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
             if (WoofixUtility::isFixedQtyPrice($id) !== false) {
                 $show_stock = get_option(WOOFIXOPT_SHOW_STOCK);
                 if ($show_stock == 'no') {
@@ -84,8 +86,9 @@ if (!class_exists('WooClientFixedQuantity')) {
             if (!empty($cart[$cart_item_key])) {
                 $cart_item = $cart[$cart_item_key];
                 $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
-                $productId = WoofixUtility::getActualId($_product);
-                $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
+                $prod_id = WoofixUtility::getActualProductId($_product);
+                $actual_id = WoofixUtility::getActualVariationId($_product);
+                $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
                 if ($fixedPriceData !== false) {
 
                     /** @noinspection PhpUnusedLocalVariableInspection */
@@ -117,8 +120,10 @@ if (!class_exists('WooClientFixedQuantity')) {
         public function add_to_cart_url($link)
         {
             global $product;
-            $productId = WoofixUtility::getActualId($product);
-            if (WoofixUtility::isFixedQtyPrice($productId) !== false) {
+            $prod_id = WoofixUtility::getActualProductId($product);
+            $actual_id = WoofixUtility::getActualVariationId($product);
+            $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
+            if ($fixedPriceData !== false) {
                 return get_permalink($product->id);
             }
             return $link;
@@ -131,8 +136,10 @@ if (!class_exists('WooClientFixedQuantity')) {
         public function add_to_cart_text($text)
         {
             global $product;
-            $productId = WoofixUtility::getActualId($product);
-            if (WoofixUtility::isFixedQtyPrice($productId) !== false) {
+            $prod_id = WoofixUtility::getActualProductId($product);
+            $actual_id = WoofixUtility::getActualVariationId($product);
+            $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
+            if ($fixedPriceData !== false) {
                 return apply_filters('woofix_product_add_to_cart_text', __('Select Options', 'woofix'));
             }
             return $text;
@@ -145,8 +152,10 @@ if (!class_exists('WooClientFixedQuantity')) {
         function loop_add_to_cart_link($link)
         {
             global $product;
-            $productId = WoofixUtility::getActualId($product);
-            if (WoofixUtility::isFixedQtyPrice($productId) !== false) {
+            $prod_id = WoofixUtility::getActualProductId($product);
+            $actual_id = WoofixUtility::getActualVariationId($product);
+            $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
+            if ($fixedPriceData !== false) {
                 return str_replace('add_to_cart_button', '', $link);
             }
             return $link;
@@ -167,8 +176,9 @@ if (!class_exists('WooClientFixedQuantity')) {
             }
 
             $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
-            $productId = WoofixUtility::getActualId($_product);
-            $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
+            $prod_id = WoofixUtility::getActualProductId($_product);
+            $actual_id = WoofixUtility::getActualVariationId($_product);
+            $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
             if ($fixedPriceData !== false) {
                 $discount = 0;
                 foreach ($fixedPriceData['woofix'] as $disc) {
@@ -204,8 +214,9 @@ if (!class_exists('WooClientFixedQuantity')) {
             foreach ($cart->get_cart() as $cart_item_key => $cart_item) {
                 $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
 
-                $productId = WoofixUtility::getActualId($_product);
-                $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
+                $prod_id = WoofixUtility::getActualProductId($_product);
+                $actual_id = WoofixUtility::getActualVariationId($_product);
+                $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
                 if ($fixedPriceData !== false) {
 
                     foreach ($fixedPriceData['woofix'] as $data) {
@@ -230,7 +241,9 @@ if (!class_exists('WooClientFixedQuantity')) {
                 $qtyInCart = 0;
 
                 foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
-                    $productId = WoofixUtility::getActualId($cart_item['data']);
+                    $prod_id = WoofixUtility::getActualProductId($cart_item['data']);
+                    $actual_id = WoofixUtility::getActualVariationId($cart_item['data']);
+                    $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
                     if ($product_id == $productId) {
                         $qtyInCart = !empty($cart_item['quantity']) ? $cart_item['quantity'] : 0;
                     }
@@ -270,8 +283,9 @@ if (!class_exists('WooClientFixedQuantity')) {
 //            }
 
             $product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
-            $productId = WoofixUtility::getActualId($product);
-            $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
+            $prod_id = WoofixUtility::getActualProductId($product);
+            $actual_id = WoofixUtility::getActualVariationId($product);
+            $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
             if ($fixedPriceData !== false) {
                 $passed = false;
                 $quantityList = array();
@@ -305,8 +319,9 @@ if (!class_exists('WooClientFixedQuantity')) {
             if (!empty($cart_item['data']) && get_option(WOOFIXOPT_SHOW_DISC) === WOOFIXCONF_SHOW_DISC) {
 
                 $_product = $cart_item['data'];
-                $productId = WoofixUtility::getActualId($_product);
-                $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
+                $prod_id = WoofixUtility::getActualProductId($_product);
+                $actual_id = WoofixUtility::getActualVariationId($_product);
+                $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
                 if ($fixedPriceData !== false) {
 
                     /** @noinspection PhpUnusedLocalVariableInspection */
@@ -344,8 +359,9 @@ if (!class_exists('WooClientFixedQuantity')) {
         {
             if (get_option(WOOFIXOPT_SHOW_DISC) === WOOFIXCONF_SHOW_DISC) {
 
-                $productId = WoofixUtility::getActualId($product);
-                $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
+                $prod_id = WoofixUtility::getActualProductId($product);
+                $actual_id = WoofixUtility::getActualVariationId($product);
+                $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
                 if ($fixedPriceData !== false) {
 
                     /** @noinspection PhpUnusedLocalVariableInspection */
