@@ -15,7 +15,11 @@ if (empty($product))
 
 $selected_quantity = !empty($selected_quantity)? $selected_quantity : '';
 
-$data = WoofixUtility::isFixedQtyPrice($product->id);
+
+$prod_id = WoofixUtility::getActualProductId($product);
+$actual_id = WoofixUtility::getActualVariationId($product);
+$data = WoofixUtility::isFixedQtyPrice($prod_id, $actual_id);
+
 ?>
 <div class="quantity_select">
     <select name="<?php echo esc_attr( $input_name ); ?>"
@@ -38,9 +42,10 @@ $data = WoofixUtility::isFixedQtyPrice($product->id);
             ?>
 
             <option value="<?php echo $woofix_qty; ?>"
+                    data-variation="<?php echo $item['woofix_variation'] ?>"
                     data-qty="<?php echo $woofix_qty; ?>"
                     data-price="<?php echo $woofix_price; ?>" <?php echo ($selected_quantity == $woofix_qty)? "selected" : ""; ?>>
-                
+
                 <?php echo $description; ?>
             </option>
 
