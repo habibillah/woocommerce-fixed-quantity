@@ -10,7 +10,7 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-if (empty($product))
+if (empty($product) || !($product instanceof WC_Product))
     global $product;
 
 $selected_quantity = !empty($selected_quantity)? $selected_quantity : '';

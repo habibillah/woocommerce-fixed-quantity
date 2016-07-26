@@ -19,6 +19,9 @@ foreach ($woofix_available_role as $role_key) {
         'name' => $all_roles[$role_key]['name']
     );
 }
+
+// $variations = $product->get_children();
+
 ?>
 
 <div id="woofix_product_data" class="panel woocommerce_options_panel wc-metaboxes-wrapper">
@@ -31,6 +34,12 @@ foreach ($woofix_available_role as $role_key) {
         </em></p>
 
         <div id="woofix_product_data_table">
+
+            <p class="woofix-variation-zone">
+                <select id="variations-fixed-price">
+                </select>
+            <p>
+
             <?php foreach ($woofix_roles as $role): ?>
                 <div class="postbox woofix_price_table_container <?php echo ($role['key'] == $woofix_default_role)? "" : "closed"; ?>"
                      data-role-key="<?php echo $role['key']; ?>">
@@ -42,14 +51,6 @@ foreach ($woofix_available_role as $role_key) {
                     </button>
                     <h2><span><?php echo $role['name'] . ' ' . __("Role", 'woofix'); ?></span></h2>
                     <div class="inside">
-
-                        <p class="woofix-variation-zone">
-                            <select id="variations-fixed-price">
-                            </select>
-                            <a class="button button-primary woofix_refresh_variation">
-                                    <?php _e('Refresh', 'woofix'); ?>
-                            </a>
-                        <p>
 
                         <p><a class="button button-primary woofix_add_price">
                                 <?php _e('Add Price', 'woofix'); ?>

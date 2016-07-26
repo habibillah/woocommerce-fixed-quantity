@@ -10,6 +10,9 @@ jQuery(document).ready(function($) {
     var woofix_product_data = '#woofix_product_data_table';
     var inputWoofixSelector = 'input[name="_woofix"]';
 
+    var variations = [];
+    var variationsIsLoading = false;
+
     var regenerateData = function() {
         var data = $(woofix_product_data + ' :input').serializeWofix(woofixjs_admin);
         $(inputWoofixSelector).val(JSON.stringify(data));
@@ -56,39 +59,63 @@ jQuery(document).ready(function($) {
         if (productType == 'simple') {
             $('.woofix_options').show();
             $('.woofix-variation-zone').hide();
-            feed_table();
+            feedTable();
         } else if(productType == 'variable') {
             $('.woofix_options').show();
             $('.woofix-variation-zone').show();
-            var options = $('.woocommerce_variation').map(function(i, e) {
-                var variation_id = $(this).find('.remove_variation').attr('rel');
-                var attributes = $(this).find('h3 select').map(function() {
-                    return $(this).find('option:selected').text();
-                });
-                var variation_name = attributes.toArray().join(' | ');
-                return '<option value='+variation_id+'>'+variation_name+'</option>';
-            });
-            if(options.length) {
-                $('#variations-fixed-price').html(options.toArray().join());
+            if(variations.length == 0 && !variationsIsLoading) {
+                loadVariations();
+            } else {
+                feedTable();
             }
-            if(get_selected_variation()) feed_table();
         } else {
             $('.woofix_options').hide();
         }
-
     };
+
+    var loadVariations = function() {
+        variationsIsLoading = true;
+        $(woofix_product_data)
+            .parents('.inside')
+            .addClass("processing")
+            .block({message:null,overlayCSS:{background:"#ccc",opacity:.6}});
+        $.post(woofix_admin.ajax_url, {
+            action: 'woofix_load_variations',
+            data: {product: woofix_admin.product_id}
+        }, function(response){
+
+            $(woofix_product_data)
+                .parents('.inside')
+                .removeClass("processing")
+                .unblock();
+
+            variationsIsLoading = false;
+
+            var options = $.map(response, function(attributes, variation_id) {
+                var variations_values = $.map(attributes, function(value) { return value; });
+                variations.push(variation_id);
+                return '<option value='+variation_id+'>'+variations_values.join(' | ')+'</option>';
+            });
+
+            if(options.length) {
+                $('#variations-fixed-price').html(options.join(''));
+            }
+
+            if(variations.length) $('#variations-fixed-price').val(variations[0]);
+
+            if(get_selected_variation()) feedTable();
+
+            hideShowVariationRow();
+
+        }, 'json');
+    };
+
 
     var hideShowVariationRow = function() {
         $('.woofix_price_table_container tbody tr').hide();
         $('.woofix_price_table_container tbody tr.variation_'+get_selected_variation()).show();
     }
 
-
-    $('.woofix_refresh_variation').on('click', function(e) {
-        e.preventDefault();
-        updateBox();
-        hideShowVariationRow();
-    });
 
     $('#variations-fixed-price').on('change', hideShowVariationRow);
 
@@ -115,7 +142,7 @@ jQuery(document).ready(function($) {
         updateBox();
     });
 
-    var feed_table = function() {
+    var feedTable = function() {
         if ($(inputWoofixSelector).length > 0) {
             var existingVal = $(inputWoofixSelector).val();
             if (existingVal != '') {
@@ -137,6 +164,9 @@ jQuery(document).ready(function($) {
 
                     $.each(data, function (index, value) {
                         if(!value) return
+                        if(get_product_type() === 'variable' && variations.indexOf(value['woofix_variation']) == -1) {
+                            return;
+                        }
                         var row = $('#woofix_template').find('tr').clone();
                         row.find('input[data-name="woofix_desc"]').val(value['woofix_desc']);
                         row.find('input[data-name="woofix_qty"]').val(value['woofix_qty']);
