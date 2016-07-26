@@ -10,13 +10,35 @@ jQuery(document).ready(function($) {
     var woofix_product_data = '#woofix_product_data_table';
     var inputWoofixSelector = 'input[name="_woofix"]';
 
+    var variations = [];
+    var variationsIsLoading = false;
+
     var regenerateData = function() {
         var data = $(woofix_product_data + ' :input').serializeWofix(woofixjs_admin);
         $(inputWoofixSelector).val(JSON.stringify(data));
     };
 
+    var get_regular_price = function() {
+        return get_product_type() == 'variable'?
+            $('.remove_variation[rel="'+get_selected_variation()+'"]')
+                .parents('.woocommerce_variation')
+                    .find('.wc_input_price').val() :
+            $('#_regular_price').val();
+    }
+
+    var get_product_type = function() {
+        return $('#product-type').val();
+    }
+
+    var get_selected_variation = function() {
+        return $('#variations-fixed-price').val();
+    }
+
     var regenerateIndex = function(role) {
-        $('.woofix_price_table_container[data-role-key="' + role + '"]').find('tbody tr').each(function(index) {
+        $('.woofix_price_table_container[data-role-key="' + role + '"]')
+            .find('tbody tr')
+            .each(function(index) {
+
             $(this).find('[data-name]').each(function() {
                 var name = $(this).data('name');
                 var inputName = 'woofix[' + role + '][' + index + '][' + name + ']';
@@ -32,16 +54,70 @@ jQuery(document).ready(function($) {
         });
     };
 
-    var showHideWoofix = function () {
-        var productType = $('#product-type').val();
+    var updateBox = function () {
+        var productType = get_product_type();
         if (productType == 'simple') {
             $('.woofix_options').show();
+            $('.woofix-variation-zone').hide();
+            feedTable();
+        } else if(productType == 'variable') {
+            $('.woofix_options').show();
+            $('.woofix-variation-zone').show();
+            if(variations.length == 0 && !variationsIsLoading) {
+                loadVariations();
+            } else {
+                feedTable();
+            }
         } else {
             $('.woofix_options').hide();
         }
     };
-    showHideWoofix();
 
+    var loadVariations = function() {
+        variationsIsLoading = true;
+        $(woofix_product_data)
+            .parents('.inside')
+            .addClass("processing")
+            .block({message:null,overlayCSS:{background:"#ccc",opacity:.6}});
+        $.post(woofix_admin.ajax_url, {
+            action: 'woofix_load_variations',
+            data: {product: woofix_admin.product_id}
+        }, function(response){
+
+            $(woofix_product_data)
+                .parents('.inside')
+                .removeClass("processing")
+                .unblock();
+
+            variationsIsLoading = false;
+
+            var options = $.map(response, function(attributes, variation_id) {
+                var variations_values = $.map(attributes, function(value) { return value; });
+                variations.push(variation_id);
+                return '<option value='+variation_id+'>'+variations_values.join(' | ')+'</option>';
+            });
+
+            if(options.length) {
+                $('#variations-fixed-price').html(options.join(''));
+            }
+
+            if(variations.length) $('#variations-fixed-price').val(variations[0]);
+
+            if(get_selected_variation()) feedTable();
+
+            hideShowVariationRow();
+
+        }, 'json');
+    };
+
+
+    var hideShowVariationRow = function() {
+        $('.woofix_price_table_container tbody tr').hide();
+        $('.woofix_price_table_container tbody tr.variation_'+get_selected_variation()).show();
+    }
+
+
+    $('#variations-fixed-price').on('change', hideShowVariationRow);
 
     var validateMonetary = function (selector) {
         var value = $(selector).val();
@@ -63,61 +139,79 @@ jQuery(document).ready(function($) {
     //=========================================
 
     $('#product-type').on('change', function () {
-        showHideWoofix();
+        updateBox();
     });
 
-    if ($(inputWoofixSelector).length > 0) {
-        var existingVal = $(inputWoofixSelector).val();
-        if (existingVal != '') {
-            existingVal = JSON.parse(existingVal);
-            $.each(existingVal['woofix'], function(roleKey, data) {
+    var feedTable = function() {
+        if ($(inputWoofixSelector).length > 0) {
+            var existingVal = $(inputWoofixSelector).val();
+            if (existingVal != '') {
+                existingVal = JSON.parse(existingVal);
+                $.each(existingVal['woofix'], function(roleKey, data) {
 
-                var needRegenerate = false;
-                if (!isNaN(roleKey)) {
-                    needRegenerate = true;
-                    roleKey = $('.woofix_price_table_container:first-child').data('role-key');
-                    var newdata = {};
-                    newdata[roleKey] = data;
-                    data = newdata;
-                }
+                    var needRegenerate = false;
+                    if (!isNaN(roleKey)) {
+                        needRegenerate = true;
+                        roleKey = $('.woofix_price_table_container:first-child').data('role-key');
+                        var newdata = {};
+                        newdata[roleKey] = data;
+                        data = newdata;
+                    }
 
-                var tableContainer = $('.woofix_price_table_container[data-role-key="' + roleKey + '"]');
-                var table = tableContainer.find('.woofix_price_table tbody');
-                $.each(data, function (index, value) {
-                    var row = $('#woofix_template').find('tr').clone();
-                    row.find('input[data-name="woofix_desc"]').val(value['woofix_desc']);
-                    row.find('input[data-name="woofix_qty"]').val(value['woofix_qty']);
-                    row.find('input[data-name="woofix_disc"]').val(formatNumberToSave(value['woofix_disc']));
-                    row.find('input[data-name="woofix_price"]').val(formatNumberToSave(value['woofix_price']));
-                    row.appendTo(table);
+                    var tableContainer = $('.woofix_price_table_container[data-role-key="' + roleKey + '"]');
+                    var table = tableContainer.find('.woofix_price_table tbody');
+                    table.find('tr').remove();
+
+                    $.each(data, function (index, value) {
+                        if(!value) return
+                        if(get_product_type() === 'variable' && variations.indexOf(value['woofix_variation']) == -1) {
+                            return;
+                        }
+                        var row = $('#woofix_template').find('tr').clone();
+                        row.find('input[data-name="woofix_desc"]').val(value['woofix_desc']);
+                        row.find('input[data-name="woofix_qty"]').val(value['woofix_qty']);
+                        row.find('input[data-name="woofix_disc"]').val(formatNumberToSave(value['woofix_disc']));
+                        row.find('input[data-name="woofix_price"]').val(formatNumberToSave(value['woofix_price']));
+                        row.find('input[data-name="woofix_variation"]').val(value['woofix_variation'])
+                        if(value['woofix_variation']) {
+                            row.addClass('variation_'+value['woofix_variation']);
+                        }
+                        row.appendTo(table);
+                    });
+
+                    regenerateIndex(roleKey);
+
+                    if (needRegenerate)
+                        regenerateData();
                 });
-                regenerateIndex(roleKey);
-
-                if (needRegenerate)
-                    regenerateData();
-            });
+            }
         }
     }
 
     $('.woofix_add_price').on('click', function() {
-        var regularPrice = $('#_regular_price').val();
+        var regularPrice = get_regular_price();
         if (regularPrice == '' || regularPrice <= 0) {
             alert ('Please add regular price.');
             return false;
         }
         var tableContainer = $(this).closest('.woofix_price_table_container');
-        $('#woofix_template').find('tr').clone().appendTo(tableContainer.find('.woofix_price_table tbody'));
-
+        var row = $('#woofix_template').find('tr').clone();
+        row.addClass('variation_'+get_selected_variation());
+        row.data('variation', get_selected_variation());
+        row.appendTo(tableContainer.find('.woofix_price_table tbody'));
+        if(get_selected_variation()) {
+            row.find('.woofix_input_variation').val(get_selected_variation());
+        }
         regenerateIndex(tableContainer.data('role-key'));
     });
-    
+
     $('#_regular_price').on('change', function() {
 
         var regularPriceValue = $(this).val();
         var regularPrice = window.accounting.unformat(regularPriceValue, woofixjs_admin.decimal_point);
 
         if (regularPrice > 0) {
-            
+
             $('input[name*="woofix_price"]').each(function() {
                 var discountValue = $(this).closest('tr').find('input[name*="woofix_disc"]').val();
                 var discount = window.accounting.unformat(discountValue, woofixjs_admin.decimal_point);
@@ -164,7 +258,7 @@ jQuery(document).ready(function($) {
         }
         $(this).val(formatNumberToSave(newVal));
 
-        var regularPriceValue = $('#_regular_price').val();
+        var regularPriceValue = get_regular_price();
         var regularPrice = window.accounting.unformat(regularPriceValue, woofixjs_admin.decimal_point);
         var $price = $(this).closest('tr').find('input[name*="woofix_price"]');
 
@@ -176,7 +270,7 @@ jQuery(document).ready(function($) {
 
     $(woofix_product_data).on('change', 'input[name*="woofix_price"]', function() {
 
-        var regularPriceValue = $('#_regular_price').val();
+        var regularPriceValue = get_regular_price();
         var regularPrice = window.accounting.unformat(regularPriceValue, woofixjs_admin.decimal_point);
 
         validateMonetary(this);
@@ -196,4 +290,6 @@ jQuery(document).ready(function($) {
     $('.woofix_price_table_container h2').click(function () {
         $(this).closest('.woofix_price_table_container').find('.button-link').click();
     });
+
+    updateBox();
 });

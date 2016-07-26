@@ -1,5 +1,5 @@
 <?php
-global $post;
+global $post, $product;
 $custom_fields = get_post_custom($post->ID);
 $woofix_qty_desc = get_option(WOOFIXOPT_QTY_DESC, WOOFIXCONF_QTY_DESC);
 $woofix_default_role = get_option(WOOFIXOPT_DEFAULT_ROLE, WOOFIXCONF_DEFAULT_ROLE);
@@ -19,6 +19,9 @@ foreach ($woofix_available_role as $role_key) {
         'name' => $all_roles[$role_key]['name']
     );
 }
+
+// $variations = $product->get_children();
+
 ?>
 
 <div id="woofix_product_data" class="panel woocommerce_options_panel wc-metaboxes-wrapper">
@@ -26,11 +29,17 @@ foreach ($woofix_available_role as $role_key) {
         <input type="hidden" name="_woofix" value="<?php echo !empty($custom_fields["_woofix"][0])? $custom_fields["_woofix"][0] : ''; ?>" />
 
         <p><em>
-            <strong><?php _e('Note:'); ?></strong> 
+            <strong><?php _e('Note:'); ?></strong>
             <?php _e('To use custom description, please use this template:'); ?> <quote>{qty} items @{price} {total}</quote>
         </em></p>
 
         <div id="woofix_product_data_table">
+
+            <p class="woofix-variation-zone">
+                <select id="variations-fixed-price">
+                </select>
+            <p>
+
             <?php foreach ($woofix_roles as $role): ?>
                 <div class="postbox woofix_price_table_container <?php echo ($role['key'] == $woofix_default_role)? "" : "closed"; ?>"
                      data-role-key="<?php echo $role['key']; ?>">
@@ -42,6 +51,7 @@ foreach ($woofix_available_role as $role_key) {
                     </button>
                     <h2><span><?php echo $role['name'] . ' ' . __("Role", 'woofix'); ?></span></h2>
                     <div class="inside">
+
                         <p><a class="button button-primary woofix_add_price">
                                 <?php _e('Add Price', 'woofix'); ?>
                             </a></p>
@@ -67,7 +77,10 @@ foreach ($woofix_available_role as $role_key) {
 
     <table id="woofix_template" class="woofix hidden">
         <tr>
-            <td><input placeholder="" type="text" class="woofix_input_desc" data-name="woofix_desc" value="<?php echo $woofix_qty_desc; ?>" /></td>
+            <td>
+                <input type="hidden" data-name="woofix_variation"  class="woofix_input_variation" />
+                <input placeholder="" type="text" class="woofix_input_desc" data-name="woofix_desc" value="<?php echo $woofix_qty_desc; ?>" />
+            </td>
             <td><input placeholder="" type="text" class="woofix_input_qty" data-name="woofix_qty" /></td>
             <td><input placeholder="" type="text" class="woofix_input_disc" data-name="woofix_disc" /></td>
             <td><input placeholder="" type="text" class="woofix_input_price" data-name="woofix_price" /></td>

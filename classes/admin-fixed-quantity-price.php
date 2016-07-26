@@ -19,6 +19,8 @@ if (!class_exists('WooAdminFixedQuantity')) {
 
             add_filter('parse_query', array(&$this, 'filter_query'));
             add_filter('woocommerce_product_filters', array(&$this, 'filter_products'));
+
+            add_action('wp_ajax_woofix_load_variations', array(&$this, 'load_product_variations'));
         }
 
         public function global_setting_configuration($settings, $current_section)
@@ -75,7 +77,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
             foreach ($all_roles as $role_name => $role_info) {
                 $available_roles[$role_name] = $role_info['name'];
             }
-            
+
             $woofix_config[] = array(
                 'name'     => __('Default Role', 'woofix'),
                 'id'       => WOOFIXOPT_DEFAULT_ROLE,
@@ -95,7 +97,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
                 'options'  => $available_roles,
                 'desc'     => __('Available Roles will be shown when you add/edit product. Default Role will be shown even not listed here.', 'woofix'),
             );
-            
+
             $woofix_config[] = array(
                 'type' => 'sectionend',
                 'id' => 'woofixconf'
@@ -135,8 +137,8 @@ if (!class_exists('WooAdminFixedQuantity')) {
                 delete_post_meta($post_id, '_woofix');
             }
         }
-        
-        function filter_products($output)
+
+        public function filter_products($output)
         {
             $html = new DOMDocument();
             if ($html->loadHTML(mb_convert_encoding($output, 'HTML-ENTITIES', 'UTF-8'))) {
@@ -153,7 +155,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
             return $output;
         }
 
-        function filter_query($query)
+        public function filter_query($query)
         {
             /** @noinspection PhpUnusedLocalVariableInspection */
             global $typenow, $wp_query;
@@ -166,6 +168,22 @@ if (!class_exists('WooAdminFixedQuantity')) {
                     }
                 }
             }
+        }
+
+        public function load_product_variations() {
+            $result = array();
+            if(isset($_POST['data']['product'])) {
+                $product = wc_get_product($_POST['data']['product']);
+                if($product instanceof WC_Product_Variable) {
+                    $variations_id = $product->get_children();
+                    foreach($variations_id as $variation_id) {
+                        $variation = $product->get_child($variation_id);
+                        $result[$variation->get_variation_id()] = $variation->get_variation_attributes();
+                    }
+                }
+            }
+            echo json_encode($result);
+            die();
         }
 
     }
