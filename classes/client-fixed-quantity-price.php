@@ -418,7 +418,7 @@ if (!class_exists('WooClientFixedQuantity')) {
             
             // search template in theme
             $theme_plugin_template = 'woocommerce-fixed-quantity/' . $template_name;
-            $template = locate_template($theme_plugin_template, $require_once);
+            $template = locate_template($theme_plugin_template, false, $require_once);
             
             if (!$template) {
                 // get default template
