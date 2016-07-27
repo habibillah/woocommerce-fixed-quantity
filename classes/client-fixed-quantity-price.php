@@ -406,7 +406,12 @@ if (!class_exists('WooClientFixedQuantity')) {
             return $template;
         }
 
-        function woofix_locate_template($template_name, $require_once)
+        /**
+         * @param $template_name
+         * @param bool $load Load template directly or just return the path
+         * @return bool|string
+         */
+        function woofix_locate_template($template_name, $load)
         {
             $available_templates = array(
                 'discount-info.php',
@@ -418,7 +423,7 @@ if (!class_exists('WooClientFixedQuantity')) {
             
             // search template in theme
             $theme_plugin_template = 'woocommerce-fixed-quantity/' . $template_name;
-            $template = locate_template($theme_plugin_template, $require_once);
+            $template = locate_template($theme_plugin_template, $load);
             
             if (!$template) {
                 // get default template
