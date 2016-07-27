@@ -386,7 +386,7 @@ if (!class_exists('WooClientFixedQuantity')) {
 
                 $postId = get_the_ID();
                 if (WoofixUtility::isFixedQtyPrice($postId) !== false) {
-                    $template = $this->woofix_locate_template($template_name, true);
+                    $template = $this->woofix_locate_template($template_name, false);
                 }
             }
 
