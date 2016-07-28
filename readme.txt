@@ -3,7 +3,7 @@ Contributors: habibillah
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JXW9V2RRZNDXW
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
-Tested up to: 4.5
+Tested up to: 4.6
 Version: 1.1.2
 Stable tag: 1.1.2
 License: GPLv2 or later

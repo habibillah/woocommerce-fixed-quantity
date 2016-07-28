@@ -7,7 +7,7 @@
  * Author URI: http://habibillah.kalicode.com/
  * Version: 1.1.2
  * Stable tag: 1.1.2
- * Tested up to: 4.5
+ * Tested up to: 4.6
  * Requires at least: 3.0.1
  * Text Domain: woofix
  * Domain Path: /languages/
