@@ -26,8 +26,8 @@ foreach ($woofix_available_role as $role_key) {
         <input type="hidden" name="_woofix" value="<?php echo !empty($custom_fields["_woofix"][0])? $custom_fields["_woofix"][0] : ''; ?>" />
 
         <p><em>
-            <strong><?php _e('Note:'); ?></strong> 
-            <?php _e('To use custom description, please use this template:'); ?> <quote>{qty} items @{price} {total}</quote>
+            <strong><?php _e('Note:', 'woofix'); ?></strong>
+            <?php _e('To use custom description, please use this template:', 'woofix'); ?> <quote>{qty} items @{price} {total}</quote>
         </em></p>
 
         <div id="woofix_product_data_table">
