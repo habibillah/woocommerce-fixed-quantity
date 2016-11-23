@@ -26,6 +26,7 @@ if (!class_exists('WooClientFixedQuantity')) {
             add_filter('woocommerce_update_cart_validation', array(&$this, 'validate_quantity_update'), 10, 4);
             add_filter('woocommerce_cart_item_quantity', array(&$this, 'filter_woocommerce_cart_item_quantity'), 10, 2);
             add_filter('woocommerce_get_availability', array(&$this, 'get_availability'), 1, 2);
+            add_filter('woocommerce_cart_item_product', array(&$this, 'filter_cart_item_product'), 20, 2);
 
             add_action('woocommerce_before_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
             add_action('woocommerce_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
@@ -192,6 +193,30 @@ if (!class_exists('WooClientFixedQuantity')) {
             }
 
             return $price;
+        }
+
+        /**
+         * Filter the construction of the cart item product.
+         * @param WC_Product | WC_Product_Variation | $product
+         * @param array $cart_item
+         * @return mixed Returns a WC_Product or one of its child classes.
+         */
+        public function filter_cart_item_product($product, $cart_item)
+        {
+            $productId = WoofixUtility::getActualId($cart_item);
+            $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
+            if ($fixedPriceData !== false) {
+                foreach ($fixedPriceData['woofix'] as $disc) {
+                    if ($disc['woofix_qty'] == $cart_item['quantity']) {
+                        if ($disc['woofix_price'] != $product->get_price()) {
+                            $itemPrice = $disc['woofix_price'];
+                            $product->set_price(floatval($itemPrice));
+                        }
+                    }
+                }
+            }
+
+            return $product;
         }
 
         /**
