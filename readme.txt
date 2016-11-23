@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
 Tested up to: 4.6
-Version: 1.1.2
-Stable tag: 1.1.2
+Version: 1.1.3
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -116,6 +116,11 @@ Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 
 = 1.1.2 =
 * Fixing conflict with underscore
+
+= 1.1.3 =
+* For to use woofix price when other plugin by pass add to cart
+* Add translation files
+* fix template load error
 
 == Upgrade Notice ==
 
