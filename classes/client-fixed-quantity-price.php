@@ -14,7 +14,7 @@ if (!class_exists('WooClientFixedQuantity')) {
         {
             $this->file = $file;
 
-            add_filter('woocommerce_product_add_to_cart_url', array(&$this, 'add_to_cart_url'));
+            add_filter('woocommerce_product_add_to_cart_url', array(&$this, 'add_to_cart_url')); //1
             add_filter('woocommerce_product_add_to_cart_text', array(&$this, 'add_to_cart_text'));
             add_filter('woocommerce_loop_add_to_cart_link', array(&$this, 'loop_add_to_cart_link'));
 
@@ -172,6 +172,7 @@ if (!class_exists('WooClientFixedQuantity')) {
             $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
             if ($fixedPriceData !== false) {
                 $discount = 0;
+
                 foreach ($fixedPriceData['woofix'] as $disc) {
                     if ($disc['woofix_qty'] == $cart_item['quantity']) {
                         $discount = $disc['woofix_disc'];
@@ -179,10 +180,18 @@ if (!class_exists('WooClientFixedQuantity')) {
                 }
 
                 $itemPrice = $_product->get_price();
-                $discprice = wc_price($itemPrice);
-                $oldprice = ($itemPrice * 100) / (100 - $discount);
-                $oldprice = wc_price($oldprice);
-                if ($oldprice == $discprice) {
+
+                    $discprice = wc_price($itemPrice);
+
+                    if(  $_product->is_type( 'simple' ) ){
+                        $oldprice = ($itemPrice * 100) / (100 - $discount);
+                    }else{
+                        $oldprice =$_product->woofixVariationBasePrice;
+                    }
+
+                    $oldprice = wc_price($oldprice);
+
+                    if ($oldprice == $discprice) {
                     $price = "<span class='discount-info'><span class='new-price'>$discprice</span></span>";
 
                 } else {
@@ -208,10 +217,27 @@ if (!class_exists('WooClientFixedQuantity')) {
             if ($fixedPriceData !== false) {
                 foreach ($fixedPriceData['woofix'] as $disc) {
                     if ($disc['woofix_qty'] == $cart_item['quantity']) {
-                        if ($disc['woofix_price'] != $product->get_price()) {
-                            $itemPrice = $disc['woofix_price'];
-                            $product->set_price(floatval($itemPrice));
+
+
+
+                        if(  $cart_item['data']->is_type( 'simple' ) ){
+                            if ($disc['woofix_price'] != $product->get_price()) {
+                                $itemPrice = $disc['woofix_price'];
+                                $product->set_price(floatval($itemPrice));
+                            }
+                        }else{
+                            if($product->woofixVariationSet == false){
+                                $itemPrice =  $product->get_price();
+                                $product->woofixVariationSet = true;
+                                $product->woofixVariationBasePrice = $itemPrice;
+                                $product->woofixVariationPrice =  $itemPrice * ((100-$disc['woofix_disc']) / 100);
+                                $product->set_price(floatval( $product->woofixVariationPrice ));
+                            }
+
+
                         }
+
+
                     }
                 }
             }
@@ -232,15 +258,20 @@ if (!class_exists('WooClientFixedQuantity')) {
                 $productId = WoofixUtility::getActualId($_product);
                 $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
                 if ($fixedPriceData !== false) {
-                                        
                     foreach ($fixedPriceData['woofix'] as $data) {
                         if ($data['woofix_qty'] == $cart_item['quantity']) {
-                            $cart_item['data']->set_price(floatval($data['woofix_price']));
+                                if(  $cart_item['data']->is_type( 'simple' ) ){
+                                    $cart_item['data']->set_price(floatval($data['woofix_price']));
+                                }elseif($cart_item['data']->is_type( 'variation' ) ){
+                                    $variablePrice = $cart_item['data']->get_price();
+                                    $cart_item['data']->set_price(floatval($variablePrice));
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
+
 
         public function validate_quantity($passed, $product_id, $quantity)
         {
@@ -442,14 +473,14 @@ if (!class_exists('WooClientFixedQuantity')) {
                 'discount-info.php',
                 'global/quantity-input.php'
             );
-            
+
             if (!in_array($template_name, $available_templates))
                 return false;
-            
+
             // search template in theme
             $theme_plugin_template = 'woocommerce-fixed-quantity/' . $template_name;
             $template = locate_template($theme_plugin_template, $load);
-            
+
             if (!$template) {
                 // get default template
                 $plugin_template = plugin_dir_path($this->file) . 'templates/' . $template_name;
@@ -460,7 +491,7 @@ if (!class_exists('WooClientFixedQuantity')) {
 
                 $template = $plugin_template;
             }
-            
+
             return $template;
         }
     }
