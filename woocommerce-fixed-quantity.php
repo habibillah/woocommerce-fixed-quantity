@@ -89,10 +89,23 @@ if (!class_exists('WooFixedQuantity')) {
 
             wp_enqueue_style('woofix_admin_css', plugins_url('/assets/css/admin-woofix.css', __FILE__));
         }
-        
+
         public function load_public_scripts()
         {
-            wp_enqueue_script('woofix_public_js', plugins_url('/assets/js/woofix.js', __FILE__), array('jquery'));
+            if(is_cart())
+            {
+                wp_enqueue_script('woofix_public_js', plugins_url('/assets/js/woofix.js', __FILE__), array('jquery'));
+            }
+            if(is_product())
+            {
+                wp_enqueue_script('woofix_public_variable_js', plugins_url('/assets/js/woofix-client-variations.js', __FILE__), array('jquery'));
+                wp_localize_script( 'woofix_public_variable_js', 'woofix', array(
+                 // URL to wp-admin/admin-ajax.php to process the request
+                 'ajaxurl' => admin_url( 'admin-ajax.php' )
+               ));
+            }
+
+
         }
     }
 }

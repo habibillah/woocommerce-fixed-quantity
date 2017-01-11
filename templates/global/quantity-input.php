@@ -18,9 +18,16 @@ $selected_quantity = !empty($selected_quantity)? $selected_quantity : '';
 $data = WoofixUtility::isFixedQtyPrice($product->id);
 ?>
 <div class="quantity_select">
-    <select name="<?php echo esc_attr( $input_name ); ?>"
+    <select  name="<?php echo esc_attr( $input_name ); ?>"
             title="<?php _ex( 'Qty', 'Product quantity input tooltip', 'woocommerce' ); ?>"
             class="qty">
+        <?php if($product->is_type('variable')) : ?>
+        <option  >
+         Please select your attributes...
+        </option>
+
+        <?php else : ?>
+       
         <?php foreach ($data['woofix'] as $item): ?>
 
             <?php
@@ -49,5 +56,8 @@ $data = WoofixUtility::isFixedQtyPrice($product->id);
             </option>
 
         <?php endforeach; ?>
+        <?php endif; ?>
     </select>
 </div>
+
+ 
