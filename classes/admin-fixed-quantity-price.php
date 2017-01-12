@@ -75,7 +75,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
             foreach ($all_roles as $role_name => $role_info) {
                 $available_roles[$role_name] = $role_info['name'];
             }
-            
+
             $woofix_config[] = array(
                 'name'     => __('Default Role', 'woofix'),
                 'id'       => WOOFIXOPT_DEFAULT_ROLE,
@@ -95,7 +95,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
                 'options'  => $available_roles,
                 'desc'     => __('Available Roles will be shown when you add/edit product. Default Role will be shown even not listed here.', 'woofix'),
             );
-            
+
             $woofix_config[] = array(
                 'type' => 'sectionend',
                 'id' => 'woofixconf'
@@ -123,8 +123,18 @@ if (!class_exists('WooAdminFixedQuantity')) {
 
         public function add_product_data_panel()
         {
-            /** @noinspection PhpIncludeInspection */
-            require_once plugin_dir_path($this->file) . 'views/html-admin-meta-box.php';
+            global $post;
+            $product = WC()->product_factory->get_product($post->ID);
+
+            if($product->is_type('variable'))
+            {
+                require_once(WOOFIX_PLUGIN_VIEW_DIR.'/html-admin-meta-box-variable.php');
+            }
+            else
+            {
+                require_once(WOOFIX_PLUGIN_VIEW_DIR.'/html-admin-meta-box.php');
+            }
+
         }
 
         public function save_custom_fields($post_id)
@@ -135,7 +145,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
                 delete_post_meta($post_id, '_woofix');
             }
         }
-        
+
         function filter_products($output)
         {
             $html = new DOMDocument();

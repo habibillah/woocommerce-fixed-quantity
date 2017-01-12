@@ -33,6 +33,8 @@ if (!class_exists('WooFixedQuantity')) {
     define("WOOFIXOPT_DEFAULT_ROLE", "woofix_default_role");
     define("WOOFIXOPT_AVAILABLE_ROLES", "woofix_available_roles");
 
+    if (!defined('WOOFIX_PLUGIN_VIEW_DIR'))
+        define( 'WOOFIX_PLUGIN_VIEW_DIR', dirname(__FILE__) . '/views' );
 
     class WooFixedQuantity
     {
@@ -61,33 +63,43 @@ if (!class_exists('WooFixedQuantity')) {
             $this->woo_client_fixed_price = new WooClientFixedQuantity(__FILE__);
         }
 
-        public function load_admin_scripts()
+        public function load_admin_scripts($hook)
         {
-            $params = array(
-                'decimal_point' => wc_get_price_decimal_separator(),
-                'num_decimals' => wc_get_price_decimals()
-            );
+            global $post;
+            //woocommerce post types
+		    if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
 
-            if (!wp_script_is('underscore', 'registered')) {
-                wp_register_script('underscore', plugins_url('/assets/js/lodash.min.js', __FILE__), array(), '1.8.3');
-            }
+		    	//product
+		        if ( 'product' === $post->post_type ) {
+                    $params = array(
+             'decimal_point' => wc_get_price_decimal_separator(),
+             'num_decimals' => wc_get_price_decimals()
+         );
 
-            wp_register_script('woofix_serializer',
-                plugins_url('/assets/js/woofix-serializer.js', __FILE__),
-                array('jquery', 'underscore'),
-                '1.1.1');
-            wp_register_script('woofix_admin_js',
-                plugins_url('/assets/js/admin-woofix.js', __FILE__),
-                array('jquery', 'underscore', 'woofix_serializer'),
-                '1.1.1');
+                    if (!wp_script_is('underscore', 'registered')) {
+                        wp_register_script('underscore', plugins_url('/assets/js/lodash.min.js', __FILE__), array(), '1.8.3');
+                    }
 
-            wp_localize_script('woofix_admin_js', 'woofix_admin', $params);
+                    wp_register_script('woofix_serializer',
+                        plugins_url('/assets/js/woofix-serializer.js', __FILE__),
+                        array('jquery', 'underscore'),
+                        '1.1.1');
+                    wp_register_script('woofix_admin_js',
+                        plugins_url('/assets/js/admin-woofix.js', __FILE__),
+                        array('jquery', 'underscore', 'woofix_serializer'),
+                        '1.1.1');
 
-            wp_enqueue_script('underscore');
-            wp_enqueue_script('woofix_serializer');
-            wp_enqueue_script('woofix_admin_js');
+                    wp_localize_script('woofix_admin_js', 'woofix_admin', $params);
 
-            wp_enqueue_style('woofix_admin_css', plugins_url('/assets/css/admin-woofix.css', __FILE__));
+                    wp_enqueue_script('underscore');
+                    wp_enqueue_script('woofix_serializer');
+                    wp_enqueue_script('woofix_admin_js');
+
+                    wp_enqueue_style('woofix_admin_css', plugins_url('/assets/css/admin-woofix.css', __FILE__));
+
+		        }
+		    }
+
         }
 
         public function load_public_scripts()
