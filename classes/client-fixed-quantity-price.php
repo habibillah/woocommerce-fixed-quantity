@@ -33,7 +33,10 @@ if (!class_exists('WooClientFixedQuantity')) {
             add_action('woocommerce_after_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
             add_action('woocommerce_cart_loaded_from_session', array(&$this, 'action_before_calculate_totals'), 10, 1);
             add_action('template_redirect', array(&$this, 'action_before_rendering_templates'));
+
+
             add_action( 'wp_ajax_get_dropdown', array(&$this, 'get_dropdown_callback' ));
+
 
             if (version_compare(WOOCOMMERCE_VERSION, "2.1.0") >= 0) {
                 add_filter('woocommerce_cart_item_price', array(&$this, 'filter_item_price'), 20, 3);
@@ -228,7 +231,10 @@ if (!class_exists('WooClientFixedQuantity')) {
                             }
                         }else{
                             if($product->woofixVariationSet == false){
-                                $this-> calculate_variation_pricing($product,$disc['woofix_disc']);
+
+                                $this-> calculate_variation_pricing($product);
+                                $product->woofixVariationPrice =  $product-> woofixVariationBasePrice * ((100-$disc['woofix_disc']) / 100);
+                                $product->set_price(floatval( $product->woofixVariationPrice ));
                             }
 
 
@@ -245,14 +251,13 @@ if (!class_exists('WooClientFixedQuantity')) {
         /**
          * Work out the pricing for a variation
          * @param WC_Product | WC_Product_Variation | $product
-         * @param int $discount
          */
-        public function calculate_variation_pricing($product,$discount){
-            $itemPrice =  $product->get_price();
-            $product->woofixVariationSet = true;
-            $product->woofixVariationBasePrice = $itemPrice;
-            $product->woofixVariationPrice =  $itemPrice * ((100-$discount) / 100);
-            $product->set_price(floatval( $product->woofixVariationPrice ));
+        public function calculate_variation_pricing($product){
+            if(!$product->woofixVariationSet){
+                $itemPrice =  $product->get_price();
+                $product->woofixVariationSet = true;
+                $product->woofixVariationBasePrice = $itemPrice;
+            }
         }
 
         /**
@@ -533,8 +538,8 @@ if (!class_exists('WooClientFixedQuantity')) {
                     if(  $product->is_type( 'simple' ) ){
                         $price = $woofix_price;
                     }elseif($product->is_type( 'variation' ) ){
-                        $this->calculate_variation_pricing($product,$item['woofix_disc']);
-                        $price =  $product->woofixVariationBasePrice * ((100-$item['woofix_disc']) / 100);
+                        $this->calculate_variation_pricing($product);
+                        $price =   $product->woofixVariationBasePrice * ((100-$item['woofix_disc']) / 100);
                     }
                     $total = wc_price($price * $woofix_qty);
                     $price = wp_strip_all_tags(wc_price($price));
