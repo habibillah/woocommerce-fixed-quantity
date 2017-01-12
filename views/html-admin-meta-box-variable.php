@@ -52,7 +52,6 @@ foreach ($woofix_available_role as $role_key) {
                                 <th class="woofix_desc"><?php _e('Description', 'woofix'); ?></th>
                                 <th class="woofix_qty"><?php _e('Qty', 'woofix'); ?></th>
                                 <th class="woofix_disc"><?php _e('Disc (%)', 'woofix'); ?></th>
-                                <th class="woofix_price"><?php _e('Price Per Qty', 'woofix'); ?></th>
                                 <th><?php _e('Action', 'woofix'); ?></th>
                             </tr>
                         </thead>
@@ -69,7 +68,6 @@ foreach ($woofix_available_role as $role_key) {
             <td><input placeholder="" type="text" class="woofix_input_desc" data-name="woofix_desc" value="<?php echo $woofix_qty_desc; ?>" /></td>
             <td><input placeholder="" type="text" class="woofix_input_qty" data-name="woofix_qty" /></td>
             <td><input placeholder="" type="text" class="woofix_input_disc" data-name="woofix_disc" /></td>
-            <td><input placeholder="" type="text" class="woofix_input_price" data-name="woofix_price" /></td>
             <td><a class="woofix_delete button"><?php _e('Remove', 'woofix'); ?></a></td>
         </tr>
     </table>
