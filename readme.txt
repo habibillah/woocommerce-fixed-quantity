@@ -43,7 +43,8 @@ Right now this plugins has limitations that not check **Stock Qty**. So when sto
 
 = Available Actions Hook =
 
-No action available
+1. woofix_before_quantity_input
+2. woofix_after_quantity_input
 
 == Installation ==
 

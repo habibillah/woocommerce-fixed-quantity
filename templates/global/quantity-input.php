@@ -18,6 +18,7 @@ $selected_quantity = !empty($selected_quantity)? $selected_quantity : '';
 $data = WoofixUtility::isFixedQtyPrice($product->id);
 ?>
 <div class="quantity_select">
+    <?php do_action('woofix_before_quantity_input'); ?>
     <select name="<?php echo esc_attr( $input_name ); ?>"
             title="<?php _ex( 'Qty', 'Product quantity input tooltip', 'woocommerce' ); ?>"
             class="qty">
@@ -46,4 +47,5 @@ $data = WoofixUtility::isFixedQtyPrice($product->id);
 
         <?php endforeach; ?>
     </select>
+    <?php do_action('woofix_after_quantity_input'); ?>
 </div>
