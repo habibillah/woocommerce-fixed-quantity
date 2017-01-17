@@ -15,7 +15,11 @@
 
 if (!defined('ABSPATH'))
     exit;
-if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins'))))
+
+$active_plugins = get_option('active_plugins', array());
+$active_network_plugins = array_keys(get_site_option('active_sitewide_plugins', array()));
+$active_plugins = array_merge($active_plugins, $active_network_plugins);
+if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', $active_plugins)))
     return;
 
 if (!class_exists('WooFixedQuantity')) {
@@ -98,3 +102,4 @@ if (!class_exists('WooFixedQuantity')) {
 }
 
 new WooFixedQuantity();
+
