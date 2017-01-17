@@ -4,8 +4,8 @@ Donate link: https://www.paypal.me/habibillah
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
 Tested up to: 4.7
-Version: 1.1.3
-Stable tag: 1.1.3
+Version: 1.1.4
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,9 +118,13 @@ Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 * Fixing conflict with underscore
 
 = 1.1.3 =
-* For to use woofix price when other plugin by pass add to cart
+* For to use woofix price when other plugin by-pass add to cart
 * Add translation files
 * fix template load error
+
+= 1.1.4 =
+* Add support for multisite
+* Tested with wordpress 4.7
 
 == Upgrade Notice ==
 
