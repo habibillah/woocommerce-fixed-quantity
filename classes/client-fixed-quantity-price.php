@@ -127,14 +127,14 @@ if (!class_exists('WooClientFixedQuantity')) {
 
         /**
          * @param $text
-         * @return string|void
+         * @return string
          */
         public function add_to_cart_text($text)
         {
             global $product;
             $productId = WoofixUtility::getActualId($product);
             if (WoofixUtility::isFixedQtyPrice($productId) !== false) {
-                return apply_filters('woofix_product_add_to_cart_text', __('Select Options', 'woofix'));
+                $text = apply_filters('woofix_product_add_to_cart_text', __('Select Options', 'woofix'));
             }
             return $text;
         }
