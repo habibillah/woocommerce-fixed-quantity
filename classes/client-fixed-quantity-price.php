@@ -209,8 +209,8 @@ if (!class_exists('WooClientFixedQuantity')) {
                 foreach ($fixedPriceData['woofix'] as $disc) {
                     if ($disc['woofix_qty'] == $cart_item['quantity']) {
                         if ($disc['woofix_price'] != $product->get_price()) {
-                            $itemPrice = $disc['woofix_price'];
-                            $product->set_price(floatval($itemPrice));
+                            $price = apply_filters('woofix_set_item_price', floatval($disc['woofix_price']), $disc, $product);
+                            $product->set_price($price);
                         }
                     }
                 }
@@ -232,10 +232,10 @@ if (!class_exists('WooClientFixedQuantity')) {
                 $productId = WoofixUtility::getActualId($_product);
                 $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
                 if ($fixedPriceData !== false) {
-                                        
                     foreach ($fixedPriceData['woofix'] as $data) {
                         if ($data['woofix_qty'] == $cart_item['quantity']) {
-                            $cart_item['data']->set_price(floatval($data['woofix_price']));
+                            $price = apply_filters('woofix_set_item_price', floatval($data['woofix_price']), $data, $_product);
+                            $cart_item['data']->set_price($price);
                         }
                     }
                 }
@@ -465,3 +465,4 @@ if (!class_exists('WooClientFixedQuantity')) {
         }
     }
 }
+
