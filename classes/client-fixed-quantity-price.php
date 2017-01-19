@@ -209,7 +209,7 @@ if (!class_exists('WooClientFixedQuantity')) {
                 foreach ($fixedPriceData['woofix'] as $disc) {
                     if ($disc['woofix_qty'] == $cart_item['quantity']) {
                         if ($disc['woofix_price'] != $product->get_price()) {
-                            $price = floatval($disc['woofix_price']);
+                            $price = apply_filters('woofix_set_item_price', floatval($disc['woofix_price']), $cart_item, $disc);
                             $product->set_price($price);
                         }
                     }
@@ -234,7 +234,7 @@ if (!class_exists('WooClientFixedQuantity')) {
                 if ($fixedPriceData !== false) {
                     foreach ($fixedPriceData['woofix'] as $data) {
                         if ($data['woofix_qty'] == $cart_item['quantity']) {
-                            $price = floatval($data['woofix_price']);
+                            $price = apply_filters('woofix_set_item_price', floatval($data['woofix_price']), $cart_item, $data);
                             $cart_item['data']->set_price($price);
                         }
                     }
