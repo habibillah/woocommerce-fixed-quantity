@@ -27,7 +27,7 @@ foreach ($woofix_available_role as $role_key) {
 
         <p><em>
             <strong><?php _e('Note:', 'woofix'); ?></strong>
-            <?php _e('To use custom description, please use this template:', 'woofix'); ?> <quote>{qty} items @{price} {total}</quote>
+            <?php _e('To use custom description, please use this template:', 'woofix'); ?> <quote>{qty}, {price}, {total}, {discount}</quote>
         </em></p>
 
         <div id="woofix_product_data_table">

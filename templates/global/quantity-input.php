@@ -31,15 +31,16 @@ $data = WoofixUtility::isFixedQtyPrice($product->id);
         <?php foreach ($data['woofix'] as $item): ?>
 
             <?php
-            $woofix_price = $item['woofix_price'];
+            $woofix_price = apply_filters('woofix_set_item_price_on_dropdown', $item['woofix_price'], $item);
             $woofix_qty = $item['woofix_qty'];
+            $woofix_disc = $item['woofix_disc'] . '%';
             $price = wc_price($woofix_price);
             $total = wc_price($woofix_price * $woofix_qty);
 
             $woofix_desc = !empty($item['woofix_desc'])? $item['woofix_desc'] : WOOFIXCONF_QTY_DESC;
             $description = str_replace(
-                array('{qty}', '{price}', '{total}', ' '),
-                array($woofix_qty,  $price, $total, '&nbsp;'),
+                array('{qty}', '{price}', '{total}', '{discount}', ' '),
+                array($woofix_qty,  $price, $total, $woofix_disc, '&nbsp;'),
                 $woofix_desc
             );
             ?>
