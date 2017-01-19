@@ -43,7 +43,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
                 'type'     => 'text',
                 'class'    => 'input-text regular-input ',
                 'required' => true,
-                'desc'     => __('Available variable are: <code>{qty}</code>, <code>{price}</code>, and <code>{total}</code>', 'woofix'),
+                'desc'     => __('Available variable are: <code>{qty}</code>, <code>{discount}</code>, <code>{price}</code>, and <code>{total}</code>', 'woofix'),
             );
 
             $woofix_config[] = array(
