@@ -31,7 +31,7 @@ $data = WoofixUtility::isFixedQtyPrice($product->id);
         <?php foreach ($data['woofix'] as $item): ?>
 
             <?php
-            $woofix_price = apply_filters('woofix_set_item_price_on_dropdown', $item['woofix_price'], $item);
+            $woofix_price = $item['woofix_price'];
             $woofix_qty = $item['woofix_qty'];
             $woofix_disc = $item['woofix_disc'] . '%';
             $price = wc_price($woofix_price);
@@ -62,3 +62,4 @@ $data = WoofixUtility::isFixedQtyPrice($product->id);
     ?>
 
 </div>
+

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/habibillah
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
 Tested up to: 4.7
-Version: 1.1.4
+Version: 1.1.5
 Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -40,6 +40,7 @@ Right now this plugins has limitations that not check **Stock Qty**. So when sto
 1. woofix_quantity_is_not_valid
 2. woofix_product_add_to_cart_text
 3. woofix_sort_qty_data_to_show
+4. woofix_set_item_price
 
 = Available Actions Hook =
 
@@ -126,6 +127,9 @@ Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 = 1.1.4 =
 * Add support for multisite
 * Tested with wordpress 4.7
+
+= 1.1.5 =
+* Add **{discount}** code templete 
 
 == Upgrade Notice ==
 
