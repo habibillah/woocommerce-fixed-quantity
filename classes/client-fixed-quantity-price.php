@@ -14,30 +14,30 @@ if (!class_exists('WooClientFixedQuantity')) {
         {
             $this->file = $file;
 
-            add_filter('woocommerce_product_add_to_cart_url', array(&$this, 'add_to_cart_url'));
-            add_filter('woocommerce_product_add_to_cart_text', array(&$this, 'add_to_cart_text'));
-            add_filter('woocommerce_loop_add_to_cart_link', array(&$this, 'loop_add_to_cart_link'));
+            add_filter('woocommerce_product_add_to_cart_url', array($this, 'add_to_cart_url'));
+            add_filter('woocommerce_product_add_to_cart_text', array($this, 'add_to_cart_text'));
+            add_filter('woocommerce_loop_add_to_cart_link', array($this, 'loop_add_to_cart_link'));
 
-            add_filter('woocommerce_locate_template', array(&$this, 'locate_template'), 20, 3);
-            add_filter('woocommerce_cart_item_subtotal', array(&$this, 'filter_subtotal_price'), 20, 2);
-            add_filter('woocommerce_checkout_item_subtotal', array(&$this, 'filter_subtotal_price'), 20, 2);
-            add_filter('woocommerce_order_formatted_line_subtotal', array(&$this, 'order_formatted_line_subtotal'), 10, 2);
-            add_filter('woocommerce_add_to_cart_validation', array(&$this, 'validate_quantity'), 10, 3);
-            add_filter('woocommerce_update_cart_validation', array(&$this, 'validate_quantity_update'), 10, 4);
-            add_filter('woocommerce_cart_item_quantity', array(&$this, 'filter_woocommerce_cart_item_quantity'), 10, 2);
-            add_filter('woocommerce_get_availability', array(&$this, 'get_availability'), 1, 2);
-            add_filter('woocommerce_cart_item_product', array(&$this, 'filter_cart_item_product'), 20, 2);
+            add_filter('woocommerce_locate_template', array($this, 'locate_template'), 20, 3);
+            add_filter('woocommerce_cart_item_subtotal', array($this, 'filter_subtotal_price'), 20, 2);
+            add_filter('woocommerce_checkout_item_subtotal', array($this, 'filter_subtotal_price'), 20, 2);
+            add_filter('woocommerce_order_formatted_line_subtotal', array($this, 'order_formatted_line_subtotal'), 10, 2);
+            add_filter('woocommerce_add_to_cart_validation', array($this, 'validate_quantity'), 10, 3);
+            add_filter('woocommerce_update_cart_validation', array($this, 'validate_quantity_update'), 10, 4);
+            add_filter('woocommerce_cart_item_quantity', array($this, 'filter_woocommerce_cart_item_quantity'), 10, 2);
+            add_filter('woocommerce_get_availability', array($this, 'get_availability'), 1, 2);
+            add_filter('woocommerce_cart_item_product', array($this, 'filter_cart_item_product'), 20, 2);
 
-            add_action('woocommerce_before_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
-            add_action('woocommerce_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
-            add_action('woocommerce_after_calculate_totals', array(&$this, 'action_before_calculate_totals'), 10, 1);
-            add_action('woocommerce_cart_loaded_from_session', array(&$this, 'action_before_calculate_totals'), 10, 1);
-            add_action('template_redirect', array(&$this, 'action_before_rendering_templates'));
+            add_action('woocommerce_before_calculate_totals', array($this, 'action_before_calculate_totals'), 10, 1);
+            add_action('woocommerce_calculate_totals', array($this, 'action_before_calculate_totals'), 10, 1);
+            add_action('woocommerce_after_calculate_totals', array($this, 'action_before_calculate_totals'), 10, 1);
+            add_action('woocommerce_cart_loaded_from_session', array($this, 'action_before_calculate_totals'), 10, 1);
+            add_action('template_redirect', array($this, 'action_before_rendering_templates'));
 
             if (version_compare(WOOCOMMERCE_VERSION, "2.1.0") >= 0) {
-                add_filter('woocommerce_cart_item_price', array(&$this, 'filter_item_price'), 20, 3);
+                add_filter('woocommerce_cart_item_price', array($this, 'filter_item_price'), 20, 3);
             } else {
-                add_filter('woocommerce_cart_item_price_html', array(&$this, 'filter_item_price'), 20, 3);
+                add_filter('woocommerce_cart_item_price_html', array($this, 'filter_item_price'), 20, 3);
             }
         }
 

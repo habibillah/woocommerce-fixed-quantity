@@ -11,14 +11,15 @@ if (!class_exists('WooAdminFixedQuantity')) {
         {
             $this->file = $file;
 
-            add_filter('woocommerce_product_data_tabs', array(&$this, 'add_product_data_tab'));
-            add_action('woocommerce_product_data_panels', array(&$this, 'add_product_data_panel'));
-            add_action('woocommerce_process_product_meta', array(&$this, 'save_custom_fields'), 10);
-            add_filter('woocommerce_get_sections_products', array(&$this, 'global_setting_section'));
-            add_filter('woocommerce_get_settings_products', array(&$this, 'global_setting_configuration'), 10, 2);
+            add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'add_action_links'));
+            add_filter('woocommerce_product_data_tabs', array($this, 'add_product_data_tab'));
+            add_action('woocommerce_product_data_panels', array($this, 'add_product_data_panel'));
+            add_action('woocommerce_process_product_meta', array($this, 'save_custom_fields'), 10);
+            add_filter('woocommerce_get_sections_products', array($this, 'global_setting_section'));
+            add_filter('woocommerce_get_settings_products', array($this, 'global_setting_configuration'), 10, 2);
 
-            add_filter('parse_query', array(&$this, 'filter_query'));
-            add_filter('woocommerce_product_filters', array(&$this, 'filter_products'));
+            add_filter('parse_query', array($this, 'filter_query'));
+            add_filter('woocommerce_product_filters', array($this, 'filter_products'));
         }
 
         public function global_setting_configuration($settings, $current_section)

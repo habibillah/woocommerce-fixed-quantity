@@ -45,9 +45,9 @@ if (!class_exists('WooFixedQuantity')) {
 
         public function __construct()
         {
-            add_action('init', array(&$this, 'load_init'));
-            add_action('admin_enqueue_scripts', array(&$this, 'load_admin_scripts'));
-            add_action('wp_enqueue_scripts', array(&$this, 'load_public_scripts'));
+            add_action('init', array($this, 'load_init'));
+            add_action('admin_enqueue_scripts', array($this, 'load_admin_scripts'));
+            add_action('wp_enqueue_scripts', array($this, 'load_public_scripts'));
         }
 
         public function load_init()
