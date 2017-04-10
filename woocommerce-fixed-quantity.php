@@ -5,8 +5,8 @@
  * Description: Customize price based on fixed quantity.
  * Author: Habibillah
  * Author URI: http://habibillah.kalicode.com/
- * Version: 1.1.5
- * Stable tag: 1.1.4
+ * Version: 1.1.6
+ * Stable tag: 1.1.6
  * Tested up to: 4.7
  * Requires at least: 3.0.1
  * Text Domain: woofix

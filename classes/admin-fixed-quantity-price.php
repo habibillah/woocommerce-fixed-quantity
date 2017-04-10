@@ -61,7 +61,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
             );
 
             $woofix_config[] = array(
-                'name'     => __('Show discount info', 'woofix'),
+                'name'     => __('Show Discount Info', 'woofix'),
                 'id'       => WOOFIXOPT_SHOW_DISC,
                 'default'  => WOOFIXCONF_SHOW_DISC,
                 'type'     => 'checkbox',
@@ -69,7 +69,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
             );
 
             $woofix_config[] = array(
-                'name'     => __('Add to cart as new product', 'woofix'),
+                'name'     => __('Add to Cart as New Item', 'woofix'),
                 'id'       => WOOFIXOPT_ADD_TO_CART_AS_NEW,
                 'default'  => WOOFIXCONF_ADD_TO_CART_AS_NEW,
                 'type'     => 'checkbox',
@@ -77,7 +77,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
             );
 
             $woofix_config[] = array(
-                'name'     => __('Show stock availability', 'woofix'),
+                'name'     => __('Show Stock Availability', 'woofix'),
                 'id'       => WOOFIXOPT_SHOW_STOCK,
                 'default'  => WOOFIXCONF_SHOW_STOCK,
                 'type'     => 'checkbox',
@@ -85,7 +85,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
             );
 
             $woofix_config[] = array(
-                'name'     => __('Check stock', 'woofix'),
+                'name'     => __('Check Stock', 'woofix'),
                 'id'       => WOOFIXOPT_CHECK_STOCK,
                 'default'  => WOOFIXCONF_CHECK_STOCK,
                 'type'     => 'checkbox',

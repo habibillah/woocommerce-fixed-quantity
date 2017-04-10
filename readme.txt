@@ -4,8 +4,8 @@ Donate link: https://www.paypal.me/habibillah
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
 Tested up to: 4.7
-Version: 1.1.5
-Stable tag: 1.1.4
+Version: 1.1.6
+Stable tag: 1.1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -129,7 +129,10 @@ Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 * Tested with wordpress 4.7
 
 = 1.1.5 =
-* Add **{discount}** code templete 
+* Add **{discount}** code templete
+
+= 1.1.6 =
+* Add option to force add to cart as new item instead of updating existing product quantity
 
 == Upgrade Notice ==
 
