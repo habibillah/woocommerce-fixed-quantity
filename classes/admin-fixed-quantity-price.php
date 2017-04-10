@@ -11,7 +11,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
         {
             $this->file = $file;
 
-            add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'add_action_links'));
+            add_filter('plugin_action_links_' . plugin_basename($this->file), array($this, 'add_action_links'));
             add_filter('woocommerce_product_data_tabs', array($this, 'add_product_data_tab'));
             add_action('woocommerce_product_data_panels', array($this, 'add_product_data_panel'));
             add_action('woocommerce_process_product_meta', array($this, 'save_custom_fields'), 10);
@@ -20,6 +20,19 @@ if (!class_exists('WooAdminFixedQuantity')) {
 
             add_filter('parse_query', array($this, 'filter_query'));
             add_filter('woocommerce_product_filters', array($this, 'filter_products'));
+        }
+
+        /**
+         * @param array $links
+         * @return array
+         *
+         */
+        public function add_action_links($links)
+        {
+            $settingURL = admin_url('admin.php?page=wc-settings&tab=products&section=woofixconf');
+            array_unshift($links, '<a href="' . $settingURL . '">Settings</a>');
+
+            return $links;
         }
 
         public function global_setting_configuration($settings, $current_section)
