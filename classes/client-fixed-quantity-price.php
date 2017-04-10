@@ -27,6 +27,7 @@ if (!class_exists('WooClientFixedQuantity')) {
             add_filter('woocommerce_cart_item_quantity', array($this, 'filter_woocommerce_cart_item_quantity'), 10, 2);
             add_filter('woocommerce_get_availability', array($this, 'get_availability'), 1, 2);
             add_filter('woocommerce_cart_item_product', array($this, 'filter_cart_item_product'), 20, 2);
+            add_filter('woocommerce_add_cart_item_data', array($this, 'add_cart_item_data'), 10, 2);
 
             add_action('woocommerce_before_calculate_totals', array($this, 'action_before_calculate_totals'), 10, 1);
             add_action('woocommerce_calculate_totals', array($this, 'action_before_calculate_totals'), 10, 1);
@@ -41,11 +42,32 @@ if (!class_exists('WooClientFixedQuantity')) {
             }
         }
 
+        /**
+         * Add custom cart item
+         * @param array $cart_item_data
+         * @param int $product_id
+         * @return array mixed
+         */
+        public function add_cart_item_data($cart_item_data, $product_id)
+        {
+            $fixedPriceData = WoofixUtility::isFixedQtyPrice($product_id);
+            if ($fixedPriceData !== false) {
+                $updateQty = get_option(WOOFIXOPT_ADD_TO_CART_AS_NEW, WOOFIXCONF_ADD_TO_CART_AS_NEW);
+                if ($updateQty !== WOOFIXCONF_ADD_TO_CART_AS_NEW) {
+                    $cart_item_data['woofix_cart_id'] = microtime();
+                }
+            }
+
+            return $cart_item_data;
+        }
+
+        /**
+         * add more validation to ensure that QTY has listed in product admin
+         */
         function action_before_rendering_templates()
         {
             if(is_cart() || is_checkout()) {
-
-                foreach(WC()->cart->cart_contents as $prod_in_cart) {
+                foreach(WC()->cart->cart_contents as $key => $prod_in_cart) {
                     $prod_id = WoofixUtility::getActualId($prod_in_cart);
                     $fixedPriceData = WoofixUtility::isFixedQtyPrice($prod_id);
                     if ($fixedPriceData !== false) {
@@ -57,12 +79,10 @@ if (!class_exists('WooClientFixedQuantity')) {
                         }
 
                         if($remove_product) {
-                            $prod_unique_id = WC()->cart->generate_cart_id($prod_id);
-                            unset( WC()->cart->cart_contents[$prod_unique_id]);
+                            unset(WC()->cart->cart_contents[$key]);
                         }
                     }
                 }
-
             }
         }
 
@@ -261,13 +281,16 @@ if (!class_exists('WooClientFixedQuantity')) {
                     }
                 }
 
-                $newQty = $qtyInCart + $quantity;
+                $updateQty = get_option(WOOFIXOPT_ADD_TO_CART_AS_NEW, WOOFIXCONF_ADD_TO_CART_AS_NEW);
+                if ($updateQty === WOOFIXCONF_ADD_TO_CART_AS_NEW) {
+                    $quantity += $qtyInCart;
+                }
 
                 $passed = false;
                 $quantityList = array();
                 foreach ($fixedPriceData['woofix'] as $data) {
                     $quantityList[] = $data['woofix_qty'];
-                    if ($data['woofix_qty'] == $newQty) {
+                    if ($data['woofix_qty'] == $quantity) {
                         $passed = true;
                     }
                 }

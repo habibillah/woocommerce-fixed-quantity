@@ -69,6 +69,14 @@ if (!class_exists('WooAdminFixedQuantity')) {
             );
 
             $woofix_config[] = array(
+                'name'     => __('Add to cart as new product', 'woofix'),
+                'id'       => WOOFIXOPT_ADD_TO_CART_AS_NEW,
+                'default'  => WOOFIXCONF_ADD_TO_CART_AS_NEW,
+                'type'     => 'checkbox',
+                'desc'     => __('When adding product to cart twice or more, add it as new instead of updating Qty.', 'woofix'),
+            );
+
+            $woofix_config[] = array(
                 'name'     => __('Show stock availability', 'woofix'),
                 'id'       => WOOFIXOPT_SHOW_STOCK,
                 'default'  => WOOFIXCONF_SHOW_STOCK,
@@ -81,7 +89,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
                 'id'       => WOOFIXOPT_CHECK_STOCK,
                 'default'  => WOOFIXCONF_CHECK_STOCK,
                 'type'     => 'checkbox',
-                'desc'     => __('Check stock availability before purchase/check out.', 'woofix'),
+                'desc'     => __('Check stock availability before purchase/check out. <b>Not implemented yet.</b>', 'woofix'),
             );
 
             $available_roles = array();

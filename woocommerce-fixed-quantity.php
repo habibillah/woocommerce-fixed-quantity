@@ -29,6 +29,7 @@ if (!class_exists('WooFixedQuantity')) {
     define("WOOFIXCONF_SHOW_STOCK", "yes");
     define("WOOFIXCONF_CHECK_STOCK", "no");
     define("WOOFIXCONF_DEFAULT_ROLE", "customer");
+    define("WOOFIXCONF_ADD_TO_CART_AS_NEW", "no");
 
     define("WOOFIXOPT_QTY_DESC", "woofix_qty_desc");
     define("WOOFIXOPT_SHOW_DISC", "woofix_show_disc");
@@ -36,6 +37,7 @@ if (!class_exists('WooFixedQuantity')) {
     define("WOOFIXOPT_CHECK_STOCK", "woofix_check_stock");
     define("WOOFIXOPT_DEFAULT_ROLE", "woofix_default_role");
     define("WOOFIXOPT_AVAILABLE_ROLES", "woofix_available_roles");
+    define("WOOFIXOPT_ADD_TO_CART_AS_NEW", "woofix_add_as_new");
 
 
     class WooFixedQuantity
