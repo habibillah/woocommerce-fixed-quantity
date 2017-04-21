@@ -134,6 +134,9 @@ Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 = 1.1.6 =
 * Add option to force add to cart as new item instead of updating existing product quantity
 
+= 1.1.7 =
+* Fix regarding woocommerce major release 3.0
+
 == Upgrade Notice ==
 
 = 1.0.1 =
