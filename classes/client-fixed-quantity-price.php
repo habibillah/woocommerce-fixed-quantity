@@ -297,7 +297,7 @@ if (!class_exists('WooClientFixedQuantity')) {
 
                 if (!$passed) {
                     $product = wc_get_product($product_id);
-                    $product_title = $product->post->post_title;
+                    $product_title = $product->get_title();
 
                     $additionalMessage = (empty($qtyInCart) || $qtyInCart < 1) ? '' : sprintf(__('You have added %s qty in your cart.', 'woofix'), $qtyInCart);
                     $message = sprintf(__("Product %s can be ordered using this listed quantity : %s. %s", "woofix"), $product_title, implode(', ', $quantityList), $additionalMessage);
