@@ -19,7 +19,7 @@ if (method_exists($product,'get_id')) {
     $productId = $product->get_id();
 } else {
     /**
-     * @deprecated
+     * @deprecated keep it for backward compatible
      */
     $productId = $product->id;
 }

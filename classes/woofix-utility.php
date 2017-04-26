@@ -50,7 +50,7 @@ if (!class_exists('WooAdminFixedQuantity')) {
                     return $product->get_id();
 
                 /**
-                 * @deprecated
+                 * @deprecated keep it for backward compatible
                  */
                 return $product->id;
             }
