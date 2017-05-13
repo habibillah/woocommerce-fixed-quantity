@@ -5,7 +5,7 @@
  * Description: Customize price based on fixed quantity.
  * Author: Habibillah
  * Author URI: http://habibillah.kalicode.com/
- * Version: 1.1.7
+ * Version: 1.1.8
  * Stable tag: 1.1.6
  * Tested up to: 4.7
  * Requires at least: 3.0.1
@@ -81,11 +81,11 @@ if (!class_exists('WooFixedQuantity')) {
             wp_register_script('woofix_serializer',
                 plugins_url('/assets/js/woofix-serializer.js', __FILE__),
                 array('jquery', 'underscore', 'woocommerce_admin'),
-                '1.1.7');
+                '1.1.8');
             wp_register_script('woofix_admin_js',
                 plugins_url('/assets/js/admin-woofix.js', __FILE__),
                 array('jquery', 'underscore', 'woocommerce_admin', 'woofix_serializer'),
-                '1.1.7');
+                '1.1.8');
 
             wp_localize_script('woofix_admin_js', 'woofix_admin', $params);
 
