@@ -81,11 +81,11 @@ if (!class_exists('WooFixedQuantity')) {
             wp_register_script('woofix_serializer',
                 plugins_url('/assets/js/woofix-serializer.js', __FILE__),
                 array('jquery', 'underscore', 'woocommerce_admin'),
-                '1.1.1');
+                '1.1.7');
             wp_register_script('woofix_admin_js',
                 plugins_url('/assets/js/admin-woofix.js', __FILE__),
-                array('jquery', 'underscore', 'woofix_serializer', 'woocommerce_admin'),
-                '1.1.1');
+                array('jquery', 'underscore', 'woocommerce_admin', 'woofix_serializer'),
+                '1.1.7');
 
             wp_localize_script('woofix_admin_js', 'woofix_admin', $params);
 
