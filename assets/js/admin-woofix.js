@@ -68,7 +68,7 @@ jQuery(document).ready(function($) {
 
     if ($(inputWoofixSelector).length > 0) {
         var existingVal = $(inputWoofixSelector).val();
-        if (existingVal != '') {
+        if (existingVal !== '') {
             existingVal = JSON.parse(existingVal);
             $.each(existingVal['woofix'], function(roleKey, data) {
 
