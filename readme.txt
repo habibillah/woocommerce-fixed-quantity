@@ -3,7 +3,7 @@ Contributors: habibillah
 Donate link: https://www.paypal.me/habibillah
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
-Tested up to: 4.7
+Tested up to: 4.8
 Version: 1.1.8
 Stable tag: 1.1.6
 License: GPLv2 or later
