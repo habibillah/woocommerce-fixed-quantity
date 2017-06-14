@@ -25,6 +25,14 @@ This project supported by:
 1. [Kalicode Sudio](http://www.kalicode.com)
 2. [PhpStorm Open Source License](https://www.jetbrains.com/buy/opensource/?product=phpstorm)
 
+= Demo Website =
+
+Sample product can be accessed at [Woofix demo website](https://woofix.kalicode.com/)
+
+1. [Happy Ninja](https://woofix.kalicode.com/shop/happy-ninja/)
+2. [Woo Ninja](https://woofix.kalicode.com/shop/woo-ninja/)
+3. [More...](https://woofix.kalicode.com/)
+
 = How to use =
 
 1. When add/ edit product, make sure you have add **Regular Price** in general tab
