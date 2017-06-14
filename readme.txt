@@ -149,3 +149,4 @@ Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 
 = 1.0.1 =
 This is the initial public release. Fill free to ask, report bugs, etc.
+
