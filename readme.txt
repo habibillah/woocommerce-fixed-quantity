@@ -22,7 +22,7 @@ define fixed quantity list.
 
 This project supported by:
 
-1. [Kalicode Sudio](http://www.kalicode.com)
+1. [Kalicode Studio](http://www.kalicode.com)
 2. [PhpStorm Open Source License](https://www.jetbrains.com/buy/opensource/?product=phpstorm)
 
 = Demo Website =
