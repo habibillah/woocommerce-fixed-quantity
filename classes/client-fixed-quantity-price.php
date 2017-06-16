@@ -187,6 +187,7 @@ if (!class_exists('WooClientFixedQuantity')) {
                 return $price;
             }
 
+            /** @var WC_Product $_product */
             $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
             $productId = WoofixUtility::getActualId($_product);
             $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
@@ -200,7 +201,7 @@ if (!class_exists('WooClientFixedQuantity')) {
 
                 $itemPrice = $_product->get_price();
                 $discprice = wc_price($itemPrice);
-                $oldprice = ($itemPrice * 100) / (100 - $discount);
+                $oldprice = ($discount < 100)? ($itemPrice * 100) / (100 - $discount) : $_product->get_regular_price('');
                 $oldprice = wc_price($oldprice);
                 if ($oldprice == $discprice) {
                     $price = "<span class='discount-info'><span class='new-price'>$discprice</span></span>";
