@@ -140,6 +140,12 @@ if (!class_exists('WooClientFixedQuantity')) {
             global $product;
             $productId = WoofixUtility::getActualId($product);
             if (WoofixUtility::isFixedQtyPrice($productId) !== false) {
+                if (method_exists($product,'get_id'))
+                    return get_permalink($product->get_id());
+
+                /**
+                 * @deprecated keep it for backward compatible
+                 */
                 return get_permalink($product->id);
             }
             return $link;
