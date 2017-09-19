@@ -34,7 +34,7 @@ $data = WoofixUtility::isFixedQtyPrice($productId);
     ?>
 
     <select name="<?php echo esc_attr( $input_name ); ?>"
-            title="<?php _ex( 'Qty', 'Product quantity input tooltip', 'woocommerce' ); ?>"
+            title="<?php _ex( 'Qty', 'Product quantity input tooltip', 'woofix' ); ?>"
             class="qty">
         <?php foreach ($data['woofix'] as $item): ?>
 
