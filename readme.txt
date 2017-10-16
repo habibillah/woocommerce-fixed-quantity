@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/habibillah
 Tags: woocomerce, fixed quantity, ecommerce, fixed price
 Requires at least: 3.0.1
 Tested up to: 4.8
-Version: 1.1.8
+Version: 1.1.9
 Stable tag: 1.1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -139,6 +139,12 @@ Uncheck **Show discount info**. Don't forget to hit **Save Changes** button.
 
 = 1.1.7 =
 * Fix regarding woocommerce major release 3.0
+
+= 1.1.8 =
+* tested to WP 4.8
+
+= 1.1.9 =
+* Fix devided by zero discount
 
 == Upgrade Notice ==
 
