@@ -205,9 +205,11 @@ if (!class_exists('WooClientFixedQuantity')) {
                     }
                 }
 
-                $itemPrice = $_product->get_price();
+                $itemPrice = apply_filters('wcml_raw_price_amount', $_product->get_price());
+                $regPrice = apply_filters('wcml_raw_price_amount', $_product->get_regular_price(''));
+
                 $discprice = wc_price($itemPrice);
-                $oldprice = ($discount < 100)? ($itemPrice * 100) / (100 - $discount) : $_product->get_regular_price('');
+                $oldprice = ($discount < 100)? ($itemPrice * 100) / (100 - $discount) : $regPrice;
                 $oldprice = wc_price($oldprice);
                 if ($oldprice == $discprice) {
                     $price = "<span class='discount-info'><span class='new-price'>$discprice</span></span>";
@@ -366,6 +368,7 @@ if (!class_exists('WooClientFixedQuantity')) {
 
                     /** @noinspection PhpUnusedLocalVariableInspection */
                     $discount = "0%";
+                    $price = apply_filters('wcml_raw_price_amount', $price);
 
                     foreach ( $fixedPriceData['woofix'] as $disc ) {
                         if ( $disc['woofix_qty'] == $cart_item['quantity'] ) {
@@ -405,6 +408,7 @@ if (!class_exists('WooClientFixedQuantity')) {
 
                     /** @noinspection PhpUnusedLocalVariableInspection */
                     $discount = "0%";
+                    $price = apply_filters('wcml_raw_price_amount', $price);
 
                     foreach ($fixedPriceData['woofix'] as $disc) {
                         if ($disc['woofix_qty'] == $product['qty']) {
