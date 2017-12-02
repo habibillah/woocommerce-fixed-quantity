@@ -195,29 +195,21 @@ if (!class_exists('WooClientFixedQuantity')) {
 
             /** @var WC_Product $_product */
             $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
-            $productId = WoofixUtility::getActualId($_product);
-            $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
-            if ($fixedPriceData !== false) {
-                $discount = 0;
-                foreach ($fixedPriceData['woofix'] as $disc) {
-                    if ($disc['woofix_qty'] == $cart_item['quantity']) {
-                        $discount = $disc['woofix_disc'];
-                    }
-                }
-
-                $itemPrice = apply_filters('wcml_raw_price_amount', $_product->get_price());
-                $regPrice = apply_filters('wcml_raw_price_amount', $_product->get_regular_price(''));
-
-                $discprice = wc_price($itemPrice);
-                $oldprice = ($discount < 100)? ($itemPrice * 100) / (100 - $discount) : $regPrice;
-                $oldprice = wc_price($oldprice);
-                if ($oldprice == $discprice) {
-                    $price = "<span class='discount-info'><span class='new-price'>$discprice</span></span>";
+            $prices = WoofixUtility::calculatePrice($_product, $cart_item['quantity']);
+            if (!empty($prices)) {
+                if ($prices[WOOFIX_PRICE_FORMATTED_BEFORE_DISCOUNT] == $prices[WOOFIX_PRICE_FORMATTED_AFTER_DISCOUNT]) {
+                    $price = "<span class='discount-info'><span class='new-price'>";
+                    $price .= $prices[WOOFIX_PRICE_FORMATTED_AFTER_DISCOUNT];
+                    $price .= "</span></span>";
 
                 } else {
-                    $price = "<span class='discount-info'>" .
-                        "<span class='old-price'><del>$oldprice</del></span>&nbsp;" .
-                        "<span class='new-price'><strong>$discprice</strong></span></span>";
+                    $price = "<span class='discount-info'>";
+                    $price .= "<span class='old-price'><del>";
+                    $price .= $prices[WOOFIX_PRICE_FORMATTED_BEFORE_DISCOUNT];
+                    $price .= "</del></span>&nbsp;";
+                    $price .= "<span class='new-price'><strong>";
+                    $price .= $prices[WOOFIX_PRICE_FORMATTED_AFTER_DISCOUNT];
+                    $price .= "</strong></span></span>";
                 }
             }
 
@@ -353,7 +345,7 @@ if (!class_exists('WooClientFixedQuantity')) {
         /**
          * Filter product price so that the discount is visible.
          *
-         * @param $price
+         * @param string $price subtotal price
          * @param $cart_item
          * @return string
          */
@@ -362,30 +354,8 @@ if (!class_exists('WooClientFixedQuantity')) {
             if (!empty($cart_item['data']) && get_option(WOOFIXOPT_SHOW_DISC) === WOOFIXCONF_SHOW_DISC) {
 
                 $_product = $cart_item['data'];
-                $productId = WoofixUtility::getActualId($_product);
-                $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
-                if ($fixedPriceData !== false) {
-
-                    /** @noinspection PhpUnusedLocalVariableInspection */
-                    $discount = "0%";
-                    $price = apply_filters('wcml_raw_price_amount', $price);
-
-                    foreach ( $fixedPriceData['woofix'] as $disc ) {
-                        if ( $disc['woofix_qty'] == $cart_item['quantity'] ) {
-
-                            /** @noinspection PhpUnusedLocalVariableInspection */
-                            $discount = $disc['woofix_disc'] . "%";
-                        }
-                    }
-
-                    $template = $this->woofix_locate_template('discount-info.php', false);
-                    if ($template !== false) {
-                        ob_start();
-                        /** @noinspection PhpIncludeInspection */
-                        include($template);
-                        $price = ob_get_clean();
-                    }
-                }
+                $prices = WoofixUtility::calculatePrice($_product, $cart_item['quantity']);
+                $price = $this->parse_discount_info($prices, $price);
             }
 
             return $price;
@@ -402,30 +372,8 @@ if (!class_exists('WooClientFixedQuantity')) {
         {
             if (get_option(WOOFIXOPT_SHOW_DISC) === WOOFIXCONF_SHOW_DISC) {
 
-                $productId = WoofixUtility::getActualId($product);
-                $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
-                if ($fixedPriceData !== false) {
-
-                    /** @noinspection PhpUnusedLocalVariableInspection */
-                    $discount = "0%";
-                    $price = apply_filters('wcml_raw_price_amount', $price);
-
-                    foreach ($fixedPriceData['woofix'] as $disc) {
-                        if ($disc['woofix_qty'] == $product['qty']) {
-
-                            /** @noinspection PhpUnusedLocalVariableInspection */
-                            $discount = $disc['woofix_disc'] . "%";
-                        }
-                    }
-
-                    $template = $this->woofix_locate_template('discount-info.php', false);
-                    if ($template !== false) {
-                        ob_start();
-                        /** @noinspection PhpIncludeInspection */
-                        include($template);
-                        $price = ob_get_clean();
-                    }
-                }
+                $prices = WoofixUtility::calculatePrice($product, $product['qty']);
+                $price = $this->parse_discount_info($prices, $price);
             }
 
             return $price;
@@ -496,6 +444,29 @@ if (!class_exists('WooClientFixedQuantity')) {
             }
             
             return $template;
+        }
+
+        /**
+         * @param array $prices
+         * @param string $price formatted price
+         * @return string
+         */
+        public function parse_discount_info($prices, $price)
+        {
+            if (!empty($prices)) {
+                /** @noinspection PhpUnusedLocalVariableInspection */
+                $discount = $prices[WOOFIX_DISCOUNT_FORMATTED];
+
+                $template = $this->woofix_locate_template('discount-info.php', false);
+                if ($template !== false) {
+                    ob_start();
+                    /** @noinspection PhpIncludeInspection */
+                    include($template);
+                    $price = ob_get_clean();
+                }
+            }
+
+            return $price;
         }
     }
 }
