@@ -15,14 +15,7 @@ if (empty($product))
 
 $selected_quantity = !empty($selected_quantity)? $selected_quantity : '';
 
-if (method_exists($product,'get_id')) {
-    $productId = $product->get_id();
-} else {
-    /**
-     * @deprecated keep it for backward compatible
-     */
-    $productId = $product->id;
-}
+$productId = WoofixUtility::getActualId($product);
 $data = WoofixUtility::isFixedQtyPrice($productId);
 ?>
 <div class="quantity_select">
