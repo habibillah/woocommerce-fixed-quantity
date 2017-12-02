@@ -2,6 +2,13 @@
 if (!defined('ABSPATH'))
     exit;
 
+define("WOOFIX_DISCOUNT_RAW", "woofix_price_raw_discount");
+define("WOOFIX_DISCOUNT_FORMATTED", "woofix_price_formatted_discount");
+define("WOOFIX_PRICE_RAW_BEFORE_DISCOUNT", "woofix_price_raw_before_discount");
+define("WOOFIX_PRICE_RAW_AFTER_DISCOUNT", "woofix_price_raw_after_discount");
+define("WOOFIX_PRICE_FORMATTED_BEFORE_DISCOUNT", "woofix_price_formatted_before_discount");
+define("WOOFIX_PRICE_FORMATTED_AFTER_DISCOUNT", "woofix_price_formatted_after_discount");
+
 if (!class_exists('WooAdminFixedQuantity')) {
     class WoofixUtility
     {
@@ -94,11 +101,51 @@ if (!class_exists('WooAdminFixedQuantity')) {
                         if (empty($qty_data['woofix_disc']) && empty($qty_data['woofix_price']))
                             continue;
 
+                        // used for WPML multi currency
+                        $qty_data['woofix_price'] = apply_filters('wcml_raw_price_amount', $qty_data['woofix_price']);
                         $returnValue[] = $qty_data;
                     }
                 }
             }
             return $returnValue;
+        }
+
+        /**
+         * @param WC_Product $product
+         * @param int $qty
+         * @return array
+         */
+        public static function calculatePrice($product, $qty)
+        {
+            $productId = WoofixUtility::getActualId($product);
+            $fixedPriceData = WoofixUtility::isFixedQtyPrice($productId);
+            if ($fixedPriceData !== false) {
+                $discount = 0;
+                foreach ($fixedPriceData['woofix'] as $disc) {
+                    if ($disc['woofix_qty'] == $qty) {
+                        $discount = $disc['woofix_disc'];
+                    }
+                }
+
+                $rawPriceAfterDisc = $product->get_price();
+                $regularPrice = $product->get_regular_price('');
+
+                $formattedPriceAfterDisc = wc_price($rawPriceAfterDisc);
+                $rawPriceBeforeDisc = ($discount < 100)? ($rawPriceAfterDisc * 100) / (100 - $discount) : $regularPrice;
+                $formattedPriceBeforeDisc = wc_price($rawPriceBeforeDisc);
+
+                return array(
+                    WOOFIX_DISCOUNT_RAW => $discount,
+                    WOOFIX_DISCOUNT_FORMATTED => "$discount%",
+                    WOOFIX_PRICE_RAW_BEFORE_DISCOUNT => $rawPriceBeforeDisc,
+                    WOOFIX_PRICE_RAW_AFTER_DISCOUNT => $rawPriceAfterDisc,
+                    WOOFIX_PRICE_FORMATTED_BEFORE_DISCOUNT => $formattedPriceBeforeDisc,
+                    WOOFIX_PRICE_FORMATTED_AFTER_DISCOUNT => $formattedPriceAfterDisc,
+                );
+            } else {
+                return array();
+            }
+
         }
     }
 }
