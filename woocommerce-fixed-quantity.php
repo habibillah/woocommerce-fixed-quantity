@@ -6,7 +6,7 @@
  * Author: Habibillah
  * Author URI: http://habibillah.kalicode.com/
  * Version: 1.2.1
- * Stable tag: 1.2.0
+ * Stable tag: 1.2.1
  * Tested up to: 4.9
  * Requires at least: 3.0.1
  * Text Domain: woofix
