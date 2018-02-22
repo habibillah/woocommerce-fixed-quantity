@@ -5,16 +5,28 @@
  * Description: Customize price based on fixed quantity.
  * Author: Habibillah
  * Author URI: http://habibillah.kalicode.com/
- * Version: 1.2.1
- * Stable tag: 1.2.1
+ * Version: 1.2.2
+ * Stable tag: 1.2.2
  * Tested up to: 4.9
  * Requires at least: 3.0.1
  * Text Domain: woofix
  * Domain Path: /languages/
  */
 
+use Symfony\Polyfill\Mbstring\Mbstring;
+
 if (!defined('ABSPATH'))
     exit;
+
+require_once __DIR__ . "/vendor/autoload.php";
+require_once __DIR__ . "/vendor/symfony/polyfill-mbstring/bootstrap.php";
+
+if (!function_exists('mb_convert_encoding')) {
+    function mb_convert_encoding($s, $to, $from = null)
+    {
+        return Mbstring::mb_convert_encoding($s, $to, $from);
+    }
+}
 
 $active_plugins = get_option('active_plugins', array());
 $active_network_plugins = array_keys(get_site_option('active_sitewide_plugins', array()));

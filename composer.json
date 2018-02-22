@@ -10,7 +10,7 @@
     ],
     "minimum-stability": "stable",
     "autoload": {
-        "psr-0": {"": "libraries/"}
+        "psr-0": {"": ""}
     },
     "require": {
         "symfony/polyfill-mbstring": "^1.7"
